@@ -3,7 +3,7 @@ Bullet = class('Bullet',Entity)
 local explosion = love.graphics.newImage("assets/art/stock_explosion.png")
 local explosionsound = love.audio.newSource("assets/sound/Sound_Hero_Pain.mp3")
 
-function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashradius, terminatex, terminatey)
+function Bullet:initialize(startx, starty, vx, vy, angle, damage, decaylimit, splashradius, terminatex, terminatey)
   Entity.initialize(self,startx,starty,3)
   
   self.left = startx - self.radius
@@ -16,6 +16,8 @@ function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashrad
   
   self.vx = vx
   self.vy = vy
+  
+  self.angle = angle
   
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
@@ -34,6 +36,10 @@ function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashrad
   
   self.hasDamaged = false
   
+end
+
+function Bullet:setImage(img)
+  self.img = img
 end
 
 function Bullet:collision(o, dx, dy, dt)
@@ -98,8 +104,12 @@ function Bullet:update(dt)
 end
 
 function Bullet:draw()
-  love.graphics.setColor(255,255,0)
-   love.graphics.circle("fill", self.centerx, self.centery, self.radius)
+  if(self.img) then
+    love.graphics.draw(self.img,self.centerx,self.centery,self.angle,1,1,0,0)
+  else
+    love.graphics.setColor(255,255,0)
+    love.graphics.circle("fill", self.centerx, self.centery, self.radius)
+  end
   -- if(self.shouldExplode) then
     -- print("I AM EXPLODING")
     -- self.shouldExplode = false
