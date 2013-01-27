@@ -1,5 +1,7 @@
 Lot = class('Lot')
 
+local Manager = require 'src.Manager'
+
 function Lot:initialize(left, top, image, quad)
   self.left = left
   self.top = top
@@ -9,6 +11,7 @@ function Lot:initialize(left, top, image, quad)
 end
 
 function Lot:draw()
+  --if self.transparent then print('Lot trans!') end
   love.graphics.drawq(self.image, self.quad, self.left, self.top - 80)
 end
 
@@ -30,7 +33,8 @@ end
 
 function Building:draw()
   if self.transparent then
-    love.graphics.setColor(255,255,255,75)
+    --print('Building trans!')
+    love.graphics.setColor(255,255,255,125)
   else
     love.graphics.setColor(255,255,255)
   end
@@ -41,8 +45,24 @@ function Building:clean()
   HC:remove(self.polygon)
 end
 
+--Door = class('Door')
+
+--function Door:initialize(left, top)
+  --self.polygon = HC:addRectangle(left, top, 64, 70)
+  --self.polygon.parent = self
+
+  --HC:setPassive(self.polygon)
+--end
+
+--function Door:clean()
+  --HC:remove(self.polygon)
+--end
+
 Hospital = class('Hospital', Building)
 
 function Hospital:initialize(left, top, width, height, image, quad)
   Building.initialize(self, left, top, width, height, image, quad)
+
+  --Manager:add(Door:new(left + 44, top + 143))
+  --Manager:add(Door:new(left + 44 + 106, top + 143))
 end
