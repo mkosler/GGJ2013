@@ -31,7 +31,7 @@ local function randomize(size, numBlockTypes)
     end
   end
 
-  for i = 1, numBlockTypes do
+  for i = 1, 2 do
     local row, col = 0, 0
     repeat
       row, col = math.random(size), math.random(size)
@@ -52,8 +52,9 @@ local function setSprite(sb, x, y, quad)
   end
 end
 
-__hospitals = {}
 local function setBuildings(size, image, tw, th, data, quad)
+  local hospitals = {}
+
   for r = 0, size - 1 do
     for c = 0, size - 1 do
       local x, y = 0, 0
@@ -72,11 +73,13 @@ local function setBuildings(size, image, tw, th, data, quad)
       elseif index == 2 then
         Manager:addBlock(Building:new(x, y + 80, tw, th, image, quad[index]))
       elseif index == 3 then
-        table.insert(__hospitals, { x = x, y = y + 80 })
+        table.insert(hospitals, { x = x, y = y + 80 })
         Manager:addBlock(Hospital:new(x, y + 80, tw, th, image, quad[index]))
       end
     end
   end
+
+  return hospitals
 end
 
 local function setInterSpriteBatch(size, image, data)
@@ -107,7 +110,7 @@ function Map:initialize(size)
   self.quad = buildQuads(bImg, 3, 320, 240)
   self.data = randomize(self.size, 3)
 
-  setBuildings(self.size, bImg, 320, 160, self.data, self.quad)
+  self.hospitals = setBuildings(self.size, bImg, 320, 160, self.data, self.quad)
   self.isb = setInterSpriteBatch(self.size, iImg, data)
 end
 
@@ -116,82 +119,9 @@ function Map:draw()
 end
 
 function Map:getSource()
-  return __hospitals[1].x, __hospitals[1].y
+  return self.hospitals[1].x, self.hospitals[1].y
 end
 
 function Map:getDestination()
-  return __hospitals[2].x, __hospitals[2].y
+  return self.hospitals[2].x, self.hospitals[2].y
 end
-
---Map = class('Map')
-
---local function buildSpriteBatches(data, size, lotImage, lotWidth, lotHeight, interImage, interWidth, interHeight)
-  --local buildingSB = love.graphics.newSpriteBatch(lotImage)
-  --local interSB = love.graphics.newSpriteBatch(interImage)
-
-  --local hospitals = {}
-
-  --for r = 0, size - 1 do
-    --for c = 0, size - 1 do
-      --if r % 2 == 0 then
-        --if instanceOf(Hospital, data[r+1][c+1]) then
-          --table.insert(hospitals, {
-            --x = c * (lotWidth + interWidth),
-            --y = r * (lotHeight + interHeight) / 2
-          --})
-        --end
-        --buildingSB:addq(
-          --data[r+1][c+1].quad,
-          --c * (lotWidth + interWidth),
-          --r * (lotHeight + interHeight) / 2)
-        --interSB:add(
-          --c * (lotWidth + interWidth),
-          --r * (lotHeight + interHeight) / 2)
-      --else
-        --if instanceOf(Hospital, data[r+1][c+1]) then
-          --table.insert(hospitals, {
-            --x = c * (lotWidth + interWidth) - ((lotWidth + interWidth) / 2),
-            --y = r * (lotHeight + interHeight) / 2
-          --})
-        --end
-        --buildingSB:addq(
-          --data[r+1][c+1].quad,
-          --c * (lotWidth + interWidth) - ((lotWidth + interWidth) / 2),
-          --r * (lotHeight + interHeight) / 2)
-        --interSB:add(
-          --c * (lotWidth + interWidth) - ((lotWidth + interWidth) / 2),
-          --r * (lotHeight + interHeight) / 2)
-      --end
-    --end
-  --end
-
-  --return { buildingSB, interSB }, hospitals
---end
-
---function Map:initialize(size)
-  --self.size = size or DEFAULT_SIZE
-  --local buildingImage, interImage = IMAGES.BACKGROUND.BUILDINGS, IMAGES.BACKGROUND.INTERSECTION
-  --self.data = randomize(self.size, buildQuads(buildingImage, NUMBER_OF_TILES, TILE_WIDTH, 240), TILE_WIDTH, TILE_HEIGHT)
-  --self.sbs, self.hospitals = buildSpriteBatches(
-    --self.data,
-    --self.size,
-    --buildingImage,
-    --TILE_WIDTH,
-    --TILE_HEIGHT,
-    --interImage,
-    --INTERSECTION_WIDTH,
-    --INTERSECTION_HEIGHT)
---end
-
---function Map:getSource()
-  --return self.hospitals[1]
---end
-
---function Map:getDestination()
-  --return self.hospitals[2]
---end
-
---function Map:draw()
-  --love.graphics.draw(self.sbs[2], 240, 0)
-  --love.graphics.draw(self.sbs[1], 0, -80)
---end
