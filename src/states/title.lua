@@ -16,7 +16,7 @@ local title = GS.new()
   end
 
   function title:enter(previous)
-
+print(background)
     local gridschema = {
       columns = {150, 10, 300, 10, 150, 10, 150 },
       rows = {20, 60, 10, 30, 10, 30, 10, 30, 10, 30 },
