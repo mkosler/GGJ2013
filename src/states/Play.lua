@@ -13,11 +13,6 @@ function Play:enter(prev, lvl)
 
   m = Map()
 
-  --Manager:add(Zombie:new(500,500,10,2))
-  --Manager:add(Zombie:new(400,500,10,2))
-  --Manager:add(Zombie:new(200,500,10,2))
-  --Manager:add(Zombie:new(300,500,10,2))
-  --Manager:add(Zombie:new(100,500,10,2))
   local sx, sy = m:getSource()
   local dx, dy = m:getDestination()
 
@@ -27,31 +22,27 @@ end
 function Play:update(dt)
   HC:update(dt)-- if collision is weird, put this at end
   Manager:update(dt)
+  if Manager.player.finished then
+    GS.switch(Play, level + 1)
+  end
    
   cam:lookAt(Manager.player:getPosition())
 end
 
 function Play:draw()
-  --local topleftx, toplefty = cam:worldCoords(200,200)
-  --local botrightx, botrighty = cam:worldCoords(8600,2000)
   cam:attach()
   love.graphics.setColor(255,255,255)
   m:draw()
   Manager:draw()
-  --love.graphics.setColor(255,0,0)
- 
- 
   cam:detach()
-  love.graphics.print(string.format('Memory (MB): %02.5f', collectgarbage('count') / 1024), 10, 10)
-   --love.graphics.rectangle("line",topleftx,toplefty,botrightx,botrighty)
-  --love.graphics.setColor(0,0,0)
-  --print(topleftx,toplefty,botrightx,botrighty)
-  
+  --love.graphics.print(string.format('Memory (MB): %02.5f', collectgarbage('count') / 1024), 10, 10)
 end
 
 function Play:keypressed(key, code)
-  if key == 'n' then
-    GS.switch(Play, level + 1)
+  if key == 'r' and Manager.player.canRemove() then
+    GS.switch(Play, level)
+  elseif key == 'escape' then
+    -- Add title menu
   end
   Manager:keypressed(key, code)
 end
