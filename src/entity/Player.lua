@@ -39,7 +39,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty, weapo
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = weapon or "flame"
+  self.weapon = weapon or "pistol"
   
   self.bulletTimer = 0
   self.frameTimer = 0

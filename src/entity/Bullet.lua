@@ -100,15 +100,15 @@ end
 function Bullet:draw()
   love.graphics.setColor(255,255,0)
    love.graphics.circle("fill", self.centerx, self.centery, self.radius)
-  if(self.shouldExplode) then
-    print("I AM EXPLODING")
-    self.shouldExplode = false
-    if(self.terminatex and self.terminatey) then
-      local drawx, drawy = cam:worldCoords(self.terminatex,self.terminatey)
-    end
-    love.graphics.draw(explosion,drawx,drawy,0,1,1,0,0)
-    --if(explosionsound) then love.graphics.play(explosionsound) end
-  end
+  -- if(self.shouldExplode) then
+    -- print("I AM EXPLODING")
+    -- self.shouldExplode = false
+    -- if(self.terminatex and self.terminatey) then
+      -- local drawx, drawy = cam:worldCoords(self.terminatex,self.terminatey)
+    -- end
+    -- love.graphics.draw(explosion,drawx,drawy,0,1,1,0,0)
+    -- --if(explosionsound) then love.graphics.play(explosionsound) end
+  -- end
     
     
 end
