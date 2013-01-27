@@ -99,4 +99,4 @@ end
     end
   end
 
-  return InGame
+  return title

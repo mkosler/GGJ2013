@@ -13,9 +13,10 @@ local title = GS.new()
     -- print("init:\t\t " .. self.debugName)
   end
 
-  function title:enter(previous)
+local lvl
+  function title:enter(previous, level)
 	background=love.graphics.newImage("assets/art/mainlogo.png")
-
+	lvl=level
     local gridschema = {
 
       columns = {20, 200, 30, 200, 30, 200 },
@@ -47,8 +48,8 @@ local title = GS.new()
     end 
 
     self.grid:Label("Current Level: ", 4, 1, 1, 1, "center", "subtitle")
-    if self.grid:Button("Upgrades ", 4,2,1,1, 'center', "menu") then
-    	GS.switch(Upgrades)
+    if self.grid:Button("Upgrades ", 4, 2, 1, 1, "menu") then
+    	GS.switch(Upgrades, lvl)
     end
    
     self.grid:Label("Sound", 4, 3, 1, 1, "center", "menu")
