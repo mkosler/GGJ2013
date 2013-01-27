@@ -15,7 +15,6 @@ function Manager:addPlayer(p)
 end
 
 function Manager:addBlock(b)
-  print('Adding block')
   table.insert(self.blocks, b)
 end
 
@@ -28,7 +27,6 @@ function Manager:remove(o)
 end
 
 function Manager:clean(i)
-  print(i, self.objects[i])
   if self.objects[i].clean then self.objects[i]:clean() end
   table.remove(self.objects, i)
 end
@@ -43,6 +41,15 @@ function Manager:update(dt)
 
   for _,v in pairs(self.objects) do
     if v.update then v:update(dt, self.player:getPosition()) end
+  end
+
+  for shape in pairs(HC:shapesInRange(self.player.centerx - 300, self.player.centery - 300, self.player.centerx + 300, self.player.centery + 300)) do
+    local l,t,r,b = shape.parent.left, shape.parent.top, shape.parent.left + 320, shape.parent.top + 160
+    if l <= self.player.centerx and self.player.centerx <= r and
+       t - 80 <= self.player.centery and self.player.centery <= b - 80 then
+      print('within!', l,t,r,b,self.player.centerx,self.player.centery)
+      m.bsb:setColor(255, 255, 255, 0)
+    end
   end
 
   for i,v in pairs(self.objects) do

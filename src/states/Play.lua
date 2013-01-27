@@ -19,7 +19,6 @@ function Play:enter(prev)
   Manager:add(Zombie:new(100,500,10,2))
   local sx, sy = m:getSource()
   local dx, dy = m:getDestination()
-  print(sx, sy)
 
   Manager:addPlayer(Player:new(sx, sy, 10, dx, dy))
 end
@@ -48,9 +47,7 @@ function Play:keyreleased(key, code)
 end
 
 function Play:mousepressed(x, y, button)
-  print('Play:mousepressed', x, y, button)
   x, y = cam:worldCoords(x, y)
-  print('Play:mousepressed', x, y, button)
   Manager:mousepressed(x, y, button)
 end
 

@@ -10,7 +10,6 @@ local downleft = love.graphics.newQuad(40, 0, 20, 40, 80, 40)
 local downright = love.graphics.newQuad(60, 0, 20, 40, 80, 40)
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
-  print('Player:initialize', centerx, centery, radius, safespotx, safespoty)
   Entity.initialize(self, centerx, centery, radius)
   
   self.left = self.centerx - radius
@@ -57,7 +56,6 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
 end
 
 function Player:collision(o, dx, dy, dt)
-  print(o)
   if (not(instanceOf(Bullet,o)) and (self.vx > 0 or self.vy > 0)) then
   self.centerx = self.centerx + dx
   self.centery = self.centery + dy
@@ -228,7 +226,6 @@ function Player:update(dt)
     py = nil
   end
   
-  --print(self.angle)
   local xshift = (self.vx * dt)
   local yshift = (self.vy * dt)
   self.centerx = self.centerx + xshift

@@ -122,7 +122,6 @@ function Map:draw()
 end
 
 function Map:getSource()
-  print(__hospitals[1].x, __hospitals[1].y)
   return __hospitals[1].x, __hospitals[1].y
 end
 

@@ -17,6 +17,7 @@ function Building:initialize(left, top, width, height)
     left + width, top + (height / 2),
     left + (width / 2), top + height)
   HC:setPassive(self.polygon)
+  self.polygon.parent = self
 end
 
 function Building:clean()
