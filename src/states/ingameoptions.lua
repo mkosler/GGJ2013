@@ -14,6 +14,8 @@ local title = GS.new()
   end
 
   function title:enter(previous)
+	background=love.graphics.newImage("assets/art/mainlogo.png")
+
     local gridschema = {
 
       columns = {20, 200, 30, 200, 30, 200 },
@@ -59,22 +61,12 @@ local title = GS.new()
     end
 
     if self.grid:Button("Resume Play", 6, 8, 1, 1, "menu") then
-      self.doExit = function () 
-      return self.parent 
+      GS.switch(Play)
     end
   end
- 
-  end  
 
   function title:draw()
-    if self.resetView then
-      love.graphics.setCanvas(self.view)
-      self.view:clear()
-      self.colors:pushRandom()
-      self.colors:pop()
-      love.graphics.setCanvas()
-      self.resetView = false
-    end
+	love.graphics.draw(background)
     self.gui.core.draw()
 
     if self.drawGrid then self.grid:TestDrawGrid() end
@@ -84,7 +76,7 @@ local title = GS.new()
   function title:keypressed(key, code)
     self.gui.core.keyboard.pressed(key, code)
     if key == "escape" then
-      GS.switch(Title)
+      GS.switch(Play)
     end
     if key == "s" then
       print(self.sliders.x.value)
