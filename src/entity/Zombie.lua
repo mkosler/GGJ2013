@@ -46,7 +46,7 @@ function Zombie:collision(o, dx, dy, dt)
       o.timer = 0.5
       o.vx = 0
       o.vy = 0
-    elseif not(instanceOf(Bullet,o)) then
+    elseif not(instanceOf(Bullet,o) and instanceOf(Building, o)) then
     self.timer = 0.5
     self.stunned = true
     self.vx = 0
@@ -63,6 +63,9 @@ function Zombie:collision(o, dx, dy, dt)
   if self.lives<=0 then
     self.removable=true
   end
+
+  self.centerx = self.centerx + dt * dx
+  self.centery = self.centery + dt * dy
 end
 
 function Zombie:endCollision(o, dt)
