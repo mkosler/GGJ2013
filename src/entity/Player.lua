@@ -3,6 +3,11 @@ local Manager = require 'src.Manager'
 Player = class('Player',Entity)
 local speed = 100
 local bulletSpeed = 500
+local spritesheet = love.graphics.newImage("assets/art/sheet_sprite_hero_walk.png")
+local upleft = love.graphics.newQuad(0, 0, 20, 40, 80, 40)
+local upright = love.graphics.newQuad(20, 0, 20, 40, 80, 40)
+local downleft = love.graphics.newQuad(40, 0, 20, 40, 80, 40)
+local downright = love.graphics.newQuad(60, 0, 20, 40, 80, 40)
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   Entity.initialize(self, centerx, centery, radius)
@@ -47,7 +52,6 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.safespoty = safespoty or 500
   
   self.arrowpointer = love.graphics.newImage("assets/art/ui_arrow.png")
-  self.heroimg = love.graphics.newImage("assets/art/hero_down_right.png")
 end
 
 function Player:collision(o, dx, dy, dt)
@@ -98,8 +102,8 @@ function Player:update(dt)
   end
   
   
-  print("heartbeat cap", self.heartbeatPace)
-  print("heartbeat timer", self.heartbeatTimer)
+ -- print("heartbeat cap", self.heartbeatPace)
+  --print("heartbeat timer", self.heartbeatTimer)
   
   if(self.heartbeatTimer < self.heartbeatPace) then
     self.heartbeatTimer = self.heartbeatTimer + dt
@@ -121,13 +125,13 @@ function Player:update(dt)
         local b = math.abs(self.centery - shape.parent.centery)
         b = b*b
         local distance = math.sqrt(a+b)
-        print("distance ",distance)
-        print("panic influence", (100/distance) * dt)
+        --print("distance ",distance)
+        --print("panic influence", (100/distance) * dt)
         self.panic = self.panic - ((100/distance) * dt)
       end
     end
   end
-  print("Panic ", self.panic)
+ -- print("Panic ", self.panic)
 
   if(self.bulletTimer > 0) then
     self.bulletTimer = self.bulletTimer - dt
@@ -200,6 +204,7 @@ function Player:update(dt)
     py = nil
   end
   
+  print(self.angle)
   local xshift = (self.vx * dt)
   local yshift = (self.vy * dt)
   self.centerx = self.centerx + xshift
@@ -217,15 +222,18 @@ function Player:draw()
   love.graphics.setColor(255,255,255)
   local angleToSafe = math.atan2((self.safespoty - self.centery),(self.safespotx - self.centerx))
   --love.graphics.rectangle("fill",self.left,self.top,self.right-self.left,self.bottom-self.top)
-  --love.graphics.setColor(255,0,0)
-  --love.graphics.circle("fill",self.hitcircle:outcircle())
+  love.graphics.setColor(255,0,0)
+  love.graphics.circle("fill",self.hitcircle:outcircle())
   love.graphics.draw(self.arrowpointer,self.imageCenterX,self.imageCenterY,angleToSafe,1,1,0,self.arrowpointer:getWidth()/2)
   if(self.heartFlash) then
     love.graphics.setColor(255,0,0)
+  else
+    love.graphics.setColor(255,255,255)
   end
-  love.graphics.draw(self.heroimg,self.left,self.top,0,1,1,0,0)
-  love.graphics.setColor(255,255,255)
+  love.graphics.drawq(spritesheet,downleft,self.left,self.top,0,1,1,0,0)
+  --love.graphics.draw(self.heroimg,self.left,self.top,0,1,1,0,0)
   love.graphics.circle("fill",340,500,10)
+  love.graphics.setColor(255,255,255)
 end
 
 function Player:mousepressed(x, y, button)
