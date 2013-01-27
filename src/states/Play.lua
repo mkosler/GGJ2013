@@ -5,11 +5,9 @@ local Manager = require 'src.Manager'
 local Camera = require 'lib.camera'
 cam = Camera()
 
-function Play:enter(prev, lvl, weapon)
-  
 local gameover = love.graphics.newImage('assets/art/Game_Over_Screen.png')
 
-function Play:enter(prev, lvl)
+function Play:enter(prev, lvl, weapon)
   level = lvl or 1
 
   HC:clear()
