@@ -28,6 +28,7 @@ end
 
 function Bullet:collision(o, dx, dy, dt)
   if not(instanceOf(Player,o)) then
+    print("Bullet colliding with", o)
     self.removable=true
   end
   if(self.splashradius > 0 and (math.abs(self.centerx - self.beginx) > 5) and (math.abs(self.centery - self.beginy) > 5)) then
@@ -46,7 +47,7 @@ end
 
 
 function Bullet:update(dt)
-  if (self.centerx < 0 or self.centerx > love.graphics.getWidth() or self.centery < 0 or self.centery > love.graphics.getHeight()) then
+  if (200 <= self.centerx and self.centerx <= 8800 and 200 <= self.centerx and self.centerx <= 2200) then
     self.removable=true
   end
   

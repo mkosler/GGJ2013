@@ -103,6 +103,9 @@ function Player:update(dt)
     self.heartbeatPace = 0.45
   end
   
+  local angleDeg = math.deg(self.angle)
+  if(angleDeg
+  
   
  -- print("heartbeat cap", self.heartbeatPace)
   --print("heartbeat timer", self.heartbeatTimer)
@@ -139,8 +142,10 @@ function Player:update(dt)
     self.bulletTimer = self.bulletTimer - dt
   else 
     if(self.fireHeld) then
-      local xdiff =  love.mouse.getX() - self.centerx
-      local ydiff = love.mouse.getY() - self.centery
+      local cameracenterx, cameracentery = cam:cameraCoords(self.centerx,self.centery)
+      local xdiff =  love.mouse.getX() - cameracenterx
+      local ydiff = love.mouse.getY() - cameracentery
+      print(love.mouse.getX(), love.mouse.getY(), xdiff, ydiff)
       local angle = math.atan2(ydiff,xdiff)
       local vx = bulletSpeed * math.cos(angle)
       local vy = bulletSpeed * math.sin(angle)
@@ -210,7 +215,7 @@ function Player:update(dt)
     py = nil
   end
   
-  print(self.angle)
+  --print(self.angle)
   local xshift = (self.vx * dt)
   local yshift = (self.vy * dt)
   self.centerx = self.centerx + xshift
