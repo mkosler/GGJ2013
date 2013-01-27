@@ -52,7 +52,11 @@ end
 
 
 function Bullet:update(dt)
-  if (200 <= self.centerx and self.centerx <= 8800 and 200 <= self.centery and self.centery <= 2200) then
+  --if (200 <= self.centerx and self.centerx <= 8800 and 200 <= self.centerx and self.centerx <= 2200) then
+  topleftx, toplefty = cam:worldCoords(0,0)
+  botrightx, botrighty = cam:worldCoords(9000,2400)
+  print(topleftx, toplefty, botrightx, botrighty)
+  if not(topleftx <= self.centerx and self.centerx <= botrightx and toplefty <= self.centery and self.centery<= botrighty) then
     self.removable=true
   end
   

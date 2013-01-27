@@ -32,12 +32,21 @@ function Play:update(dt)
 end
 
 function Play:draw()
+  --local topleftx, toplefty = cam:worldCoords(200,200)
+  --local botrightx, botrighty = cam:worldCoords(8600,2000)
   cam:attach()
   love.graphics.setColor(255,255,255)
   m:draw()
   Manager:draw()
+  --love.graphics.setColor(255,0,0)
+ 
+ 
   cam:detach()
   love.graphics.print(string.format('Memory (MB): %02.5f', collectgarbage('count') / 1024), 10, 10)
+   --love.graphics.rectangle("line",topleftx,toplefty,botrightx,botrighty)
+  --love.graphics.setColor(0,0,0)
+  --print(topleftx,toplefty,botrightx,botrighty)
+  
 end
 
 function Play:keypressed(key, code)
