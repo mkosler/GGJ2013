@@ -4,10 +4,10 @@ Player = class('Player',Entity)
 local speed = 100
 local bulletSpeed = 500
 local spritesheet = love.graphics.newImage("assets/art/sheet_sprite_hero_walk.png")
-local upleft = love.graphics.newQuad(0, 0, 20, 40, 80, 40)
-local upright = love.graphics.newQuad(20, 0, 20, 40, 80, 40)
-local downleft = love.graphics.newQuad(40, 0, 20, 40, 80, 40)
-local downright = love.graphics.newQuad(60, 0, 20, 40, 80, 40)
+local upleft = love.graphics.newQuad(0, 0, 20, 40, 80, 80)
+local upright = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
+local downleft = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
+local downright = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   Entity.initialize(self, centerx, centery, radius)

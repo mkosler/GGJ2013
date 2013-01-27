@@ -116,6 +116,9 @@ end
 
 function Map:draw()
   love.graphics.draw(self.isb)
+  love.graphics.setColor(255,0,0)
+  love.graphics.rectangle("line",200,200,8600,2000)
+  love.graphics.setColor(0,0,0)
 end
 
 function Map:getSource()
