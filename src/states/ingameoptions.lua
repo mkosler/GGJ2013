@@ -19,7 +19,7 @@ local title = GS.new()
     local gridschema = {
 
       columns = {20, 200, 30, 200, 30, 200 },
-      rows = { 80, 30, 30, 30, 30, 30, 80, 30 },
+      rows = { 80, 35, 30, 30, 30, 30, 80, 30 },
       alignment = {
         horizontal = "left",
         vertical = "top"
@@ -56,11 +56,11 @@ local title = GS.new()
 
  --   love.audio.setVolume(self.sliders.x.value)
 
-    if self.grid:Button("Main Menu", 2,8,1,1, "menu") then
+    if self.grid:Button("Main Menu", 2,6,1,1, "menu") then
     	GS.switch(Title)
     end
 
-    if self.grid:Button("Resume Play", 6, 8, 1, 1, "menu") then
+    if self.grid:Button("Resume Play", 6, 6, 1, 1, "menu") then
       GS.switch(Play)
     end
   end
