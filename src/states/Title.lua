@@ -6,6 +6,7 @@ local title = GS.new()
     self.colors = require 'lib.colors'
     self.gui = require 'lib.quickie'
     self.grid = require 'lib.quickie.grid'
+	
 	background=love.graphics.newImage("assets/art/title_screen_0.png")
   
 	timer = 2
@@ -15,7 +16,7 @@ local title = GS.new()
   end
 
   function title:enter(previous)
-	background=love.graphics.newImage("assets/art/logo.png")
+	background=love.graphics.newImage("assets/art/title_screen_0.png")
 
     local gridschema = {
       columns = {150, 10, 150, 10, 150, 10, 150 },
@@ -65,6 +66,8 @@ print(Credits)
 
 if(timer < 0) then
 love.graphics.setBackgroundColor(0,0,0) 
+background=love.graphics.newImage("assets/art/mainlogo.png")
+
     self.gui.core.draw()
 end
     if self.drawGrid then self.grid:TestDrawGrid() end
