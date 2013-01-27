@@ -47,8 +47,9 @@ function Manager:update(dt)
     local l,t,r,b = shape.parent.left, shape.parent.top, shape.parent.left + 320, shape.parent.top + 160
     if l <= self.player.centerx and self.player.centerx <= r and
        t - 80 <= self.player.centery and self.player.centery <= b - 80 then
-      print('within!', l,t,r,b,self.player.centerx,self.player.centery)
-      m.bsb:setColor(255, 255, 255, 0)
+      shape.parent.transparent = true
+    else
+      shape.parent.transparent = false
     end
   end
 
@@ -58,10 +59,13 @@ function Manager:update(dt)
 end
 
 function Manager:draw()
-  if self.player then self.player:draw() end
   for _,v in pairs(self.objects) do
     if v.draw then v:draw() end
   end
+  for _,v in pairs(self.blocks) do
+    if v.draw then v:draw() end
+  end
+  if self.player then self.player:draw() end
 end
 
 function Manager:mousepressed(x, y, button)

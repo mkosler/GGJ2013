@@ -247,7 +247,7 @@ function Player:draw()
   --love.graphics.circle("fill",self.hitcircle:outcircle())
   love.graphics.draw(self.arrowpointer,self.imageCenterX,self.imageCenterY,angleToSafe,1,1,0,self.arrowpointer:getWidth()/2)
   if(self.heartFlash) then
-    love.graphics.setColor(redscale,0,0)
+    love.graphics.setColor(255,0,0)
   else
     love.graphics.setColor(255,255,255)
   end

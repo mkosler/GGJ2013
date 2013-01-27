@@ -53,9 +53,7 @@ local function setSprite(sb, x, y, quad)
 end
 
 __hospitals = {}
-local function setBuildingSpriteBatch(size, image, tw, th, data, quad)
-  local sb = love.graphics.newSpriteBatch(image)
-
+local function setBuildings(size, image, tw, th, data, quad)
   for r = 0, size - 1 do
     for c = 0, size - 1 do
       local x, y = 0, 0
@@ -68,20 +66,17 @@ local function setBuildingSpriteBatch(size, image, tw, th, data, quad)
       end
 
       local index = data[r+1][c+1]
-      setSprite(sb, x, y, quad[index])
 
       if index == 1 then
-        Manager:addBlock(Lot:new(x, y + 80))
+        Manager:addBlock(Lot:new(x, y + 80, image, quad[index]))
       elseif index == 2 then
-        Manager:addBlock(Building:new(x, y + 80, tw, th))
+        Manager:addBlock(Building:new(x, y + 80, tw, th, image, quad[index]))
       elseif index == 3 then
         table.insert(__hospitals, { x = x, y = y + 80 })
-        Manager:addBlock(Hospital:new(x, y + 80, tw, th))
+        Manager:addBlock(Hospital:new(x, y + 80, tw, th, image, quad[index]))
       end
     end
   end
-
-  return sb
 end
 
 local function setInterSpriteBatch(size, image, data)
@@ -112,13 +107,12 @@ function Map:initialize(size)
   self.quad = buildQuads(bImg, 3, 320, 240)
   self.data = randomize(self.size, 3)
 
-  self.bsb = setBuildingSpriteBatch(self.size, bImg, 320, 160, self.data, self.quad)
+  setBuildings(self.size, bImg, 320, 160, self.data, self.quad)
   self.isb = setInterSpriteBatch(self.size, iImg, data)
 end
 
 function Map:draw()
   love.graphics.draw(self.isb)
-  love.graphics.draw(self.bsb)
 end
 
 function Map:getSource()
