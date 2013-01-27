@@ -1,7 +1,7 @@
 Bullet = class('Bullet',Entity)
 
 function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashradius, terminatex, terminatey)
-  Entity.initialize(self,startx,starty,4)
+  Entity.initialize(self,startx,starty,3)
   
   self.left = startx - self.radius
   self.right = startx + self.radius
@@ -32,8 +32,7 @@ function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashrad
 end
 
 function Bullet:collision(o, dx, dy, dt)
-  if not(instanceOf(Player,o)) then
-    print("Bullet colliding with", o)
+  if not(instanceOf(Player,o) or instanceOf(Bullet,o)) then
     self.removable=true
   end
   if(self.splashradius > 0 and (math.abs(self.centerx - self.beginx) > 5) and (math.abs(self.centery - self.beginy) > 5)) then
@@ -55,7 +54,6 @@ function Bullet:update(dt)
   --if (200 <= self.centerx and self.centerx <= 8800 and 200 <= self.centerx and self.centerx <= 2200) then
   topleftx, toplefty = cam:worldCoords(0,0)
   botrightx, botrighty = cam:worldCoords(9000,2400)
-  print(topleftx, toplefty, botrightx, botrighty)
   if not(topleftx <= self.centerx and self.centerx <= botrightx and toplefty <= self.centery and self.centery<= botrighty) then
     self.removable=true
   end

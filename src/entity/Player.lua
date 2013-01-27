@@ -15,9 +15,9 @@ local downright2 = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
 
 local pistolsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
 local smgsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
-local shotgunsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local shotgunsound = love.audio.newSource("assets/sound/Sound_Gun_Shot_1.mp3")
 local flamesound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
-local riflesound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local riflesound = love.audio.newSource("assets/sound/Sound_Gun_Shot_1.mp3")
 local bazookasound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
 
 
@@ -35,7 +35,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = "rifle"
+  self.weapon = "bazooka"
   
   self.bulletTimer = 0
   self.frameTimer = 0
@@ -190,8 +190,6 @@ function Player:update(dt)
   end
   
   
- -- print("heartbeat cap", self.heartbeatPace)
-  --print("heartbeat timer", self.heartbeatTimer)
   
   if(self.heartbeatTimer < self.heartbeatPace) then
     self.heartbeatTimer = self.heartbeatTimer + dt
@@ -213,13 +211,10 @@ function Player:update(dt)
         local b = math.abs(self.centery - shape.parent.centery)
         b = b*b
         local distance = math.sqrt(a+b)
-        --print("distance ",distance)
-        --print("panic influence", (100/distance) * dt)
         self.panic = self.panic - ((100/distance) * dt)
       end
     end
   end
- -- print("Panic ", self.panic)
 
   if(self.bulletTimer > 0) then
     self.bulletTimer = self.bulletTimer - dt
@@ -228,7 +223,6 @@ function Player:update(dt)
       local cameracenterx, cameracentery = cam:cameraCoords(self.centerx,self.centery)
       local xdiff =  love.mouse.getX() - cameracenterx
       local ydiff = love.mouse.getY() - cameracentery
-      print(love.mouse.getX(), love.mouse.getY(), xdiff, ydiff)
       local angle = math.atan2(ydiff,xdiff)
       local vx = bulletSpeed * math.cos(angle)
       local vy = bulletSpeed * math.sin(angle)
@@ -242,6 +236,7 @@ function Player:update(dt)
         self.bulletTimer = 0.07
       end
       if(self.weapon == 'shotgun') then
+        if(shotgunsound) then love.audio.play(shotgunsound) end
         self.fireHeld = false
         self.bulletTimer = 0.4
         Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1,0.5))
