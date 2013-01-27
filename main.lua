@@ -1,6 +1,9 @@
 math.randomseed(os.time())
 math.random(); math.random(); math.random();
 
+
+--- DERP
+
 require 'lib.middleclass'
 GS = require 'lib.gamestate'
 
