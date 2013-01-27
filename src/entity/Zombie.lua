@@ -13,6 +13,7 @@ local right2 = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
 function Zombie:initialize(centerx, centery, radius, lives)
   Entity.initialize(self,centerx,centery,radius)
   self.lives = lives
+  self.speed = speed * lives
   
   self.left = self.centerx - radius
   self.right = self.centerx + radius
@@ -35,23 +36,10 @@ function Zombie:initialize(centerx, centery, radius, lives)
   
   self.angle = 0
 
-	if speed < 80 then
-    speed = speed + level*5
-	end
-  
   self.quad = down
 end
 
---function Zombie:canRemove()
-  --return self.removable
---end
-
---function Zombie:clean()
-  --HC:remove(self.hitcircle)
---end
-
 function Zombie:collision(o, dx, dy, dt)
-	--change for building and people if have time	
   if not(self.stunned) then
     if(instanceOf(Zombie,o)) then
       o.stunned = true
@@ -98,8 +86,8 @@ function Zombie:update(dt, playerX, playerY)
     local diffX= playerX-self.centerx
     local diffY = playerY-self.bottom
     self.angle = math.atan2(diffY,diffX)
-    self.vx = speed * math.cos(self.angle)
-    self.vy = speed * math.sin(self.angle)
+    self.vx = self.speed * math.cos(self.angle)
+    self.vy = self.speed * math.sin(self.angle)
   end
   
   local xshift = (self.vx * dt)
@@ -181,8 +169,5 @@ function Zombie:update(dt, playerX, playerY)
 end
 
 function Zombie:draw()
-	-- love.graphics.setColor(168,133,37)
-	-- love.graphics.rectangle("fill",self.left,self.top,self.right-self.left,self.bottom-self.top)
-  -- love.graphics.circle("fill",self.hitcircle:outcircle())
   love.graphics.drawq(spritesheet,self.quad,self.left,self.top,0,1,1,0,0)
 end
