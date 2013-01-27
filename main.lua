@@ -39,6 +39,7 @@ TitleOptions = require 'src.states.titleoptions'
 Play = require 'src.states.Play'
 Upgrades = require 'src.states.upgrades'
 Title = require 'src.states.title'
+Instructions = require 'src.states.instructions'
 --Options = require 'src.states.Options'
 
 
