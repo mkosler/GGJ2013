@@ -22,7 +22,11 @@ local bazookasound = love.audio.newSource("assets/sound/Sound_Gun_Bazooka.mp3")
 
 local flameplaying = false
 local flametimer = 0
+
 local flameimage = love.graphics.newImage("assets/art/gun_flame_shot.png")
+local shotgunimage = love.graphics.newImage("assets/art/gun_shotgun_shot.png")
+local bulletimage = love.graphics.newImage("assets/art/gun_bazooka_shot.png")
+local bazookaimage = love.graphics.newImage("assets/art/gun_bazooka_shot.png")
 
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty, weapon)
@@ -39,7 +43,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty, weapo
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = weapon or "flame"
+  self.weapon = weapon or "pistol"
   
   self.bulletTimer = 0
   self.frameTimer = 0
@@ -73,8 +77,6 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty, weapo
 end
 
 function Player:collision(o, dx, dy, dt)
-  print(o)
-  if o.name then print(o.name) end
   if(instanceOf(Door,o) and o.name == "Destination") then
     self.finished = true
   end
@@ -110,7 +112,6 @@ function Player:update(dt)
   end
   
   if(flameplaying) then
-    print(flameTimer)
     if(flameTimer > 3.4) then
       flameTimer = 0
       if(flamesound) then 
@@ -238,7 +239,7 @@ function Player:update(dt)
         local b = math.abs(self.centery - shape.parent.centery)
         b = b*b
         local distance = math.sqrt(a+b)
-        self.panic = self.panic - ((100/distance) * dt)
+        self.panic = self.panic - ((100/distance) * dt * 5)
       end
     end
   end
@@ -259,7 +260,7 @@ function Player:update(dt)
           love.audio.play(pistolsound)
         end
         local b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1)
-        if(flameimage) then b:setImage(flameimage) end
+        if(bulletimage) then b:setImage(bulletimage) end
         Manager:add(b)
         self.bulletTimer = 0.25
         self.fireHeld = false
@@ -269,7 +270,9 @@ function Player:update(dt)
           love.audio.stop(smgsound)
           love.audio.play(smgsound)
         end
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,0.4))
+        local b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,0.4)
+        if(bulletimage) then b:setImage(bulletimage) end
+        Manager:add(b)
         self.bulletTimer = 0.07
       end
       if(self.weapon == 'shotgun') then
@@ -279,24 +282,34 @@ function Player:update(dt)
         end
         self.fireHeld = false
         self.bulletTimer = 0.4
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5))
+        local b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5)
+        if(shotgunimage) then b:setImage(shotgunimage) end
+        Manager:add(b)
         local origangle = angle
         angle = origangle + math.rad(5)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5))
+        b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5)
+        if(shotgunimage) then b:setImage(shotgunimage) end
+        Manager:add(b)
         angle = origangle + math.rad(10)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5))
+        b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5)
+        if(shotgunimage) then b:setImage(shotgunimage) end
+        Manager:add(b)
         angle = origangle - math.rad(10)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5))
+        b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5)
+        if(shotgunimage) then b:setImage(shotgunimage) end
+        Manager:add(b)
         angle = origangle - math.rad(5)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5))
+        b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,1,0.5)
+        if(shotgunimage) then b:setImage(shotgunimage) end
+        Manager:add(b)
       end
       if(self.weapon == 'flame') then
         if(flamesound and not flameplaying) then 
@@ -304,8 +317,8 @@ function Player:update(dt)
           love.audio.play(flamesound) 
           flameTimer = 0
         end
-        local b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,0.1,0.4)
-        b:setImage(flameimage)
+        local b = Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,angle,0.3,0.35)
+        if(flameimage) then b:setImage(flameimage) end
         Manager:add(b)
         self.bulletTimer = 0.03
       end
@@ -314,7 +327,9 @@ function Player:update(dt)
           love.audio.stop(riflesound) 
           love.audio.play(riflesound) 
         end
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,3*vx,3*vy,angle,10))
+        b = Bullet:new(self.imageCenterX,self.imageCenterY,3*vx,3*vy,angle,10)
+        if(bulletimage) then b:setImage(bulletimage) end
+        Manager:add(b)
         self.bulletTimer = 1.5
       end
       if(self.weapon == 'bazooka') then
@@ -323,7 +338,9 @@ function Player:update(dt)
           love.audio.play(bazookasound) 
         end
         local termx, termy = cam:worldCoords(love.mouse.getX(),love.mouse.getY())
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,0.75*vx,0.75*vy,angle,10,10,70,termx,termy))
+        b = Bullet:new(self.imageCenterX,self.imageCenterY,0.75*vx,0.75*vy,angle,10,10,70,termx,termy)
+        if(bazookaimage) then b:setImage(bazookaimage) end
+        Manager:add(b)
         self.bulletTimer = 2.5
       end
     end
@@ -397,6 +414,26 @@ function Player:keypressed(key,code)
  
   if(key == ' ') then
     self.fireHeld = true
+  end
+  
+  if(key == '1') then
+    self.weapon = "pistol"
+  end
+  
+  if(key == '2') then
+    self.weapon = "smg"
+  end
+  if(key == '3') then
+    self.weapon = "shotgun"
+  end
+  if(key == '4') then
+    self.weapon = "flame"
+  end
+  if(key == '5') then
+    self.weapon = "rifle"
+  end
+  if(key == '6') then
+    self.weapon = "bazooka"
   end
 end
 

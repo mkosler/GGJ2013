@@ -1,5 +1,11 @@
 local Manager = class('Manager')
 
+local explosion = love.graphics.newImage("assets/art/stock_explosion.png")
+local explosionsound = love.audio.newSource("assets/sound/Sound_Gun_Bazooka_Explosion.mp3")
+local makeExplosion = false
+local explodey
+local exxplodex
+
 function Manager:initialize()
   self.player = {}
   self.objects = {}
@@ -30,7 +36,14 @@ function Manager:remove(o)
 end
 
 function Manager:clean(i)
-  if self.objects[i].clean then self.objects[i]:clean() end
+  if self.objects[i].clean then 
+    self.objects[i]:clean() 
+    if(instanceOf(Bullet,self.objects[i]) and self.objects[i].shouldExplode) then
+      makeExplosion = true
+      explodex = self.objects[i].centerx
+      explodey = self.objects[i].centery
+    end
+  end
   table.remove(self.objects, i)
 end
 
@@ -45,13 +58,13 @@ end
 
 function Manager:update(dt)
   if self.zombieTimer > 0 then
-    self.zombieTimer = self.zombieTimer - dt
+    self.zombieTimer = self.zombieTimer - dt*(level*2)
     if self.zombieTimer <= 0 then
       local halfwidth, halfheight =
         love.graphics.getWidth() / 2,
         love.graphics.getHeight() / 2
       local x, y = self.player.centerx + halfwidth * sign(), self.player.centery + halfheight * sign()
-      print(string.format('Spawning zombie @ (%d,%d)', x, y))
+      --print(string.format('Spawning zombie @ (%d,%d)', x, y))
       self:add(Zombie:new(x, y, 10, 2))
       self.zombieTimer = self.zombieTimerMax
     end
@@ -89,6 +102,13 @@ function Manager:draw()
   end
 
   if self.player then self.player:draw() end
+  
+  if(makeExplosion and explosionx and explosiony) then
+    love.graphics.draw(explosion,explosionx,explosiony)
+    makeExplosion = false
+    explosionx = nil
+    explosiony = nil
+  end
 end
 
 function Manager:mousepressed(x, y, button)

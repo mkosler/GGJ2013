@@ -43,7 +43,6 @@ function Play:draw()
   cam:detach()
   --love.graphics.print(string.format('Memory (MB): %02.5f', collectgarbage('count') / 1024), 10, 10)
   if Manager.player:canRemove() then
-    print(Manager.player:canRemove())
     love.graphics.draw(gameover)
   end
 end

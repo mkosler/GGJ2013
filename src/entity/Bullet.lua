@@ -1,7 +1,6 @@
 Bullet = class('Bullet',Entity)
 
-local explosion = love.graphics.newImage("assets/art/stock_explosion.png")
-local explosionsound = love.audio.newSource("assets/sound/Sound_Hero_Pain.mp3")
+
 
 function Bullet:initialize(startx, starty, vx, vy, angle, damage, decaylimit, splashradius, terminatex, terminatey)
   Entity.initialize(self,startx,starty,3)
@@ -31,8 +30,9 @@ function Bullet:initialize(startx, starty, vx, vy, angle, damage, decaylimit, sp
   
   self.terminatex = terminatex
   self.terminatey = terminatey
-  
-  self.shouldExplode = false
+  if(splashradius) then
+    self.shouldExplode = (splashradius > 0)
+  end
   
   self.hasDamaged = false
   
@@ -98,14 +98,15 @@ function Bullet:update(dt)
   self.bottom = self.centery + self.radius
   
   self.hitcircle:moveTo(self.centerx,self.centery)
-
+  
   
   
 end
 
 function Bullet:draw()
   if(self.img) then
-    love.graphics.draw(self.img,self.centerx,self.centery,self.angle,1,1,0,0)
+    love.graphics.draw(self.img,self.centerx,self.centery,self.angle,1,1,5,10)
+    --love.graphics.circle("fill", self.centerx, self.centery, self.radius)
   else
     love.graphics.setColor(255,255,0)
     love.graphics.circle("fill", self.centerx, self.centery, self.radius)

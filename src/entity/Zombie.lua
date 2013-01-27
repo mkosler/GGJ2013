@@ -29,7 +29,7 @@ function Zombie:initialize(centerx, centery, radius, lives)
   self.facing = 'd'
   
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
-  --HC:addToGroup('Zombies',self.hitcircle)
+  --HC:addRectangle(self.left,self.top,self.right,self.bottom)
   self.hitcircle.parent = self
   self.vx = 0
   self.vy = 0
@@ -46,7 +46,7 @@ function Zombie:collision(o, dx, dy, dt)
       o.timer = 0.5
       o.vx = 0
       o.vy = 0
-    elseif not(instanceOf(Bullet,o) and instanceOf(Building, o)) then
+    elseif not(instanceOf(Bullet,o) or instanceOf(Building, o)) then
     self.timer = 0.5
     self.stunned = true
     self.vx = 0
@@ -55,7 +55,6 @@ function Zombie:collision(o, dx, dy, dt)
   end
   
   if(instanceOf(Bullet, o) and not(o.hasDamaged)) then
-    print("I'VE COLLIDED WITH A BULLET")
     o.hasDamaged = true
     self.lives=self.lives-o.damage
   end
@@ -64,8 +63,8 @@ function Zombie:collision(o, dx, dy, dt)
     self.removable=true
   end
 
-  self.centerx = self.centerx + dt * dx
-  self.centery = self.centery + dt * dy
+  self.centerx = self.centerx + dt * dx * 4
+  self.centery = self.centery + dt * dy * 4
 end
 
 function Zombie:endCollision(o, dt)
