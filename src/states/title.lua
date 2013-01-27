@@ -25,7 +25,7 @@ local title = GS.new()
         horizontal = "center",
         vertical = "top"
       },
-      margin = { left = 0, top = 275, right = 0, bottom = 0 }
+      margin = { left = 85, top = 275, right = 0, bottom = 0 }
     }
     self.grid:init(self.gui, gridschema)
     -- print("enter:\t\t " .. self.debugName)
