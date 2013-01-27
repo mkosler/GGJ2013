@@ -22,6 +22,7 @@ local bazookasound = love.audio.newSource("assets/sound/Sound_Gun_Bazooka.mp3")
 
 local flameplaying = false
 local flametimer = 0
+local flameimage = love.graphics.newImage("assets/art/stock_explosion.png")
 
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty, weapon)
@@ -38,7 +39,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty, weapo
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = weapon or "pistol"
+  self.weapon = weapon or "flame"
   
   self.bulletTimer = 0
   self.frameTimer = 0
@@ -106,15 +107,16 @@ function Player:update(dt)
     self.frameTimer = self.frameTimer + dt
   end
   
-  if(flamePlaying) then
-    if(self.flameTimer > 3.4) then
-      self.flameTimer = 0
-      if(flameSound) then 
-        love.audio.stop(flameSound)
-        love.audio.play(flameSound)
+  if(flameplaying) then
+    print(flameTimer)
+    if(flameTimer > 3.4) then
+      flameTimer = 0
+      if(flamesound) then 
+        love.audio.stop(flamesound)
+        love.audio.play(flamesound)
       end
     else
-      self.flameTimer = self.flameTimer + dt
+      flameTimer = flameTimer + dt
     end
   end
  
@@ -263,7 +265,7 @@ function Player:update(dt)
           love.audio.stop(smgsound)
           love.audio.play(smgsound)
         end
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,0.4))
         self.bulletTimer = 0.07
       end
       if(self.weapon == 'shotgun') then
@@ -298,7 +300,7 @@ function Player:update(dt)
           love.audio.play(flamesound) 
           flameTimer = 0
         end
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,0.1,0.3))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,0.1,0.4))
         self.bulletTimer = 0.03
       end
       if(self.weapon == 'rifle') then
@@ -315,7 +317,7 @@ function Player:update(dt)
           love.audio.play(bazookasound) 
         end
         local termx, termy = cam:worldCoords(love.mouse.getX(),love.mouse.getY())
-        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,0.75*vx,0.75*vy,10,10,7,termx,termy))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,0.75*vx,0.75*vy,10,10,70,termx,termy))
         self.bulletTimer = 2.5
       end
     end

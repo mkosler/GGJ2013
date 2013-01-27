@@ -55,6 +55,7 @@ function Zombie:collision(o, dx, dy, dt)
   end
   
   if(instanceOf(Bullet, o) and not(o.hasDamaged)) then
+    print("I'VE COLLIDED WITH A BULLET")
     o.hasDamaged = true
     self.lives=self.lives-o.damage
   end

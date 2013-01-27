@@ -1,5 +1,8 @@
 Bullet = class('Bullet',Entity)
 
+local explosion = love.graphics.newImage("assets/art/stock_explosion.png")
+local explosionsound = love.audio.newSource("assets/sound/Sound_Hero_Pain.mp3")
+
 function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashradius, terminatex, terminatey)
   Entity.initialize(self,startx,starty,3)
   
@@ -22,10 +25,12 @@ function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashrad
   
   self.damage = damage
   
-  self.splashradius = splashradius or -1
+  self.splashradius = splashradius or 0
   
   self.terminatex = terminatex
   self.terminatey = terminatey
+  
+  self.shouldExplode = false
   
   self.hasDamaged = false
   
@@ -34,16 +39,19 @@ end
 function Bullet:collision(o, dx, dy, dt)
   if not(instanceOf(Player,o) or instanceOf(Bullet,o)) then
     self.removable=true
+    self.shouldExplode = true
   end
   if(self.splashradius > 0 and (math.abs(self.centerx - self.beginx) > 5) and (math.abs(self.centery - self.beginy) > 5)) then
     for shape in pairs(HC:shapesInRange(self.centerx-self.splashradius,self.centery-self.splashradius,self.centerx+self.splashradius,self.centery+self.splashradius)) do
       if(instanceOf(Zombie,shape.parent)) then
-        if((math.abs(self.centerx - shape.parent.centerx) < self.splashradius) and math.abs(self.centery - shape.parent.centery) < self.splashradius) then
+        if(((math.abs(self.centerx - shape.parent.centerx)) < self.splashradius) and (math.abs(self.centery - shape.parent.centery) < self.splashradius)) then
           shape.parent:collision(self,0,0,0)
+          self.shouldExplode = true
         end
       end
     end
   end
+  self:draw()
 end
 
 function Bullet:endCollision(o, dt)
@@ -55,12 +63,13 @@ function Bullet:update(dt)
   topleftx, toplefty = cam:worldCoords(0,0)
   botrightx, botrighty = cam:worldCoords(9000,2400)
   if not(topleftx <= self.centerx and self.centerx <= botrightx and toplefty <= self.centery and self.centery<= botrighty) then
+    self.shouldExplode = true
     self.removable=true
   end
   
   if(self.terminatex and self.terminatey) then
     if((math.abs(self.centerx - self.terminatex) < 5) and (math.abs(self.centery - self.terminatey) < 5)) then
-      
+      self.shouldExplode = true
       self.removable = true
       self:collision(o,0,0,0)
     end
@@ -68,6 +77,7 @@ function Bullet:update(dt)
   
   self.decaytimer = self.decaytimer + dt
   if(self.decaylimit > 0 and self.decaytimer >= self.decaylimit) then
+    self.shouldExplode = true
     self.removable=true
   end
 
@@ -90,4 +100,15 @@ end
 function Bullet:draw()
   love.graphics.setColor(255,255,0)
    love.graphics.circle("fill", self.centerx, self.centery, self.radius)
+  if(self.shouldExplode) then
+    print("I AM EXPLODING")
+    self.shouldExplode = false
+    if(self.terminatex and self.terminatey) then
+      local drawx, drawy = cam:worldCoords(self.terminatex,self.terminatey)
+    end
+    love.graphics.draw(explosion,drawx,drawy,0,1,1,0,0)
+    --if(explosionsound) then love.graphics.play(explosionsound) end
+  end
+    
+    
 end
