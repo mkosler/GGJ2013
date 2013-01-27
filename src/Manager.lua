@@ -44,6 +44,7 @@ function Manager:update(dt)
   end
 
   for shape in pairs(HC:shapesInRange(self.player.centerx - 300, self.player.centery - 300, self.player.centerx + 300, self.player.centery + 300)) do
+    print(shape.parent)
     local l,t,r,b = shape.parent.left, shape.parent.top, shape.parent.left + 320, shape.parent.top + 160
     if l <= self.player.centerx and self.player.centerx <= r and
        t - 80 <= self.player.centery and self.player.centery <= b - 80 then

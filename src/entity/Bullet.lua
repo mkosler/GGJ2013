@@ -3,6 +3,11 @@ Bullet = class('Bullet',Entity)
 function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashradius, terminatex, terminatey)
   Entity.initialize(self,startx,starty,4)
   
+  self.left = startx - self.radius
+  self.right = startx + self.radius
+  self.top = starty - self.radius
+  self.bottom = starty + self.radius
+  
   self.beginx = startx
   self.beginy = starty
   
@@ -68,6 +73,11 @@ function Bullet:update(dt)
   local yshift = (self.vy * dt)
   self.centerx = self.centerx + xshift
   self.centery = self.centery + yshift
+  
+  self.left = self.centerx - self.radius
+  self.right = self.centerx + self.radius
+  self.top = self.centery - self.radius
+  self.bottom = self.centery + self.radius
   
   self.hitcircle:moveTo(self.centerx,self.centery)
 
