@@ -5,18 +5,19 @@ local Manager = require 'src.Manager'
 local Camera = require 'lib.camera'
 cam = Camera()
 
+function Play:enter(prev, lvl)
+  level = lvl or 1
 
-function Play:enter(prev)
   HC:clear()
   Manager:clear()
 
   m = Map()
 
-  Manager:add(Zombie:new(500,500,10,2))
-  Manager:add(Zombie:new(400,500,10,2))
-  Manager:add(Zombie:new(200,500,10,2))
-  Manager:add(Zombie:new(300,500,10,2))
-  Manager:add(Zombie:new(100,500,10,2))
+  --Manager:add(Zombie:new(500,500,10,2))
+  --Manager:add(Zombie:new(400,500,10,2))
+  --Manager:add(Zombie:new(200,500,10,2))
+  --Manager:add(Zombie:new(300,500,10,2))
+  --Manager:add(Zombie:new(100,500,10,2))
   local sx, sy = m:getSource()
   local dx, dy = m:getDestination()
 
@@ -36,9 +37,13 @@ function Play:draw()
   m:draw()
   Manager:draw()
   cam:detach()
+  love.graphics.print(string.format('Memory (MB): %02.5f', collectgarbage('count') / 1024), 10, 10)
 end
 
 function Play:keypressed(key, code)
+  if key == 'n' then
+    GS.switch(Play, level + 1)
+  end
   Manager:keypressed(key, code)
 end
 

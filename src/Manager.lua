@@ -4,6 +4,9 @@ function Manager:initialize()
   self.player = {}
   self.objects = {}
   self.blocks = {}
+
+  self.zombieTimerMax = 5
+  self.zombieTimer = self.zombieTimerMax
 end
 
 function Manager:add(o)
@@ -36,7 +39,23 @@ function Manager:cleanBlock(i)
   table.remove(self.blocks, i)
 end
 
+local function sign()
+  return math.random() < 0.5 and -1 or 1
+end
+
 function Manager:update(dt)
+  if self.zombieTimer > 0 then
+    self.zombieTimer = self.zombieTimer - dt
+    if self.zombieTimer <= 0 then
+      local halfwidth, halfheight =
+        love.graphics.getWidth() / 2,
+        love.graphics.getHeight() / 2
+      local x, y = self.player.centerx + halfwidth * sign(), self.player.centery + halfheight * sign()
+      print(string.format('Spawning zombie @ (%d,%d)', x, y))
+      self:add(Zombie:new(x, y, 10, 2))
+      self.zombieTimer = self.zombieTimerMax
+    end
+  end
   if self.player then self.player:update(dt) end
 
   for _,v in pairs(self.objects) do
@@ -44,13 +63,14 @@ function Manager:update(dt)
   end
 
   for shape in pairs(HC:shapesInRange(self.player.centerx - 300, self.player.centery - 300, self.player.centerx + 300, self.player.centery + 300)) do
-    print(shape.parent)
-    local l,t,r,b = shape.parent.left, shape.parent.top, shape.parent.left + 320, shape.parent.top + 160
-    if l <= self.player.centerx and self.player.centerx <= r and
-       t - 80 <= self.player.centery and self.player.centery <= b - 80 then
-      shape.parent.transparent = true
-    else
-      shape.parent.transparent = false
+    if instanceOf(Building, shape.parent) then
+      local l,t,r,b = shape.parent.left, shape.parent.top, shape.parent.left + 320, shape.parent.top + 160
+      if l <= self.player.centerx and self.player.centerx <= r and
+         t - 80 <= self.player.centery and self.player.centery <= b - 80 then
+        shape.parent.transparent = true
+      else
+        shape.parent.transparent = false
+      end
     end
   end
 
@@ -60,12 +80,14 @@ function Manager:update(dt)
 end
 
 function Manager:draw()
-  for _,v in pairs(self.objects) do
-    if v.draw then v:draw() end
-  end
   for _,v in pairs(self.blocks) do
     if v.draw then v:draw() end
   end
+
+  for _,v in pairs(self.objects) do
+    if v.draw then v:draw() end
+  end
+
   if self.player then self.player:draw() end
 end
 
@@ -93,6 +115,12 @@ function Manager:clear()
   for i,v in pairs(self.blocks) do
     self:cleanBlock(i)
   end
+
+  print(#self.objects, #self.blocks)
+
+  self.player = {}
+  self.objects = {}
+  self.blocks = {}
 end
 
 local singleton = Manager:new()
