@@ -21,9 +21,9 @@ function Zombie:initialize(centerx, centery, radius, lives)
   self.vx = 0
   self.vy = 0
 
-	--if speed < 80 then
-	--speed = speed + level*5
-	--end
+	if speed < 80 then
+    speed = speed + level*5
+	end
 end
 
 --function Zombie:canRemove()
