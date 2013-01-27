@@ -18,13 +18,13 @@ local title = GS.new()
 
     local gridschema = {
 
-      columns = { 20, 200, 10, 100, 10, 812 },
-      rows = { 20, 20, 10, 20, 10, 20, 10, 538 },
+      columns = { 20, 230, 10, 100, 10, 20 },
+      rows = { 20, 20, 10, 20, 10, 20, 30, 10 },
       alignment = {
         horizontal = "left",
         vertical = "top"
       },
-      margin = { left = 250, top = 300, right = 130, bottom = 130 }
+      margin = { left = 285, top = 300, right = 130, bottom = 130 }
     }
     self.grid:init(self.gui, gridschema)
 
