@@ -47,17 +47,11 @@ local title = GS.new()
   love.graphics.draw(background)
     self.gui.core.draw()
 	love.graphics.setColor( 255, 255, 255)
-	love.graphics.printf("Contributors:", 0, 255, 800, "center")
-	love.graphics.printf("Anesh Patel: Programmer, Jonathan Williamson: Game Sound/Art, Marley Rainey: Game Art,\nMichael Kosler: Programmer, Nate Giles: Programmer, Niraj Patel: Programmer", 0, 275, 800, "center")
+	love.graphics.printf("Instructions", 0, 255, 800, "center")
+	love.graphics.printf("\nObject: Kill all zombies and reach the safe house!!", 0, 275, 800, "center")
 	
-	love.graphics.printf("Created for: Global Game Jam 2013", 0, 330, 800, "center")
-	love.graphics.printf("Theme: Heartbeat Sound", 0, 350, 800, "center")
-	love.graphics.printf("Programming Language: Lau", 0, 370, 800, "center")
-	
-	love.graphics.printf("Documentation: http://goo.gl/dvvwz", 0, 405, 800, "center")
-
-
-    print("Hi")
+	love.graphics.printf("Move: Left mouse click", 0, 330, 800, "center")
+	love.graphics.printf("Shoot: Spacebar", 0, 350, 800, "center")
 
     if self.drawGrid then self.grid:TestDrawGrid() end
   end
