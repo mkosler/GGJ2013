@@ -35,11 +35,9 @@ local function randomize(size, numBlockTypes)
     local row, col = 0, 0
     repeat
       row, col = math.random(size), math.random(size)
-    until base[row][col] ~= 3 and row ~= 1 and row ~= 20 and col ~= 1 and col ~= 20
+    until base[row][col] ~= 3 and 3 < row and row < 17 and 3 < col and col < 17
     base[row][col] = 3
   end
-
-  --for _,v in ipairs(base) do print(table.concat(v, ' ')) end
 
   return base
 end

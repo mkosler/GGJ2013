@@ -13,7 +13,8 @@ local title = GS.new()
     -- print("init:\t\t " .. self.debugName)
   end
 
-  function title:enter(previous)
+  function title:enter(previous, lvl)
+    nxtlvl = lvl + 1
     local gridschema = {
 
       columns = {200, 30, 200, 30, 200 },
@@ -45,17 +46,17 @@ local title = GS.new()
     end 
 
     self.grid:Button("Pistol", 3, 1, 1, 1, "center", "menu")
-      GS.switch(pistol) 
+      GS.switch(Play, nxtlvl, "pistol") 
     self.grid:Button("SMG", 3,2,1,1, 'center', "menu")
-      GS.switch(smg) 
+      GS.switch(Play, nxtlvl, "smg") 
     self.grid:Button("Shotgun", 3, 3, 1, 1, "center", "menu")
-      GS.switch(shotgun) 
+      GS.switch(Play, nxtlvl, "shotgun") 
     self.grid:Button("Bazooka", 3, 4, 1, 1, "center", "menu")
-      GS.switch(bazooka)
+      GS.switch(Play, nxtlvl, "bazooka")
     self.grid:Button("Flamethrower", 3, 5, 1, 1, "center", "menu")
-      GS.switch(flame)
+      GS.switch(Play, nxtlvl, "flame")
     self.grid:Button("Rifle", 3, 6, 1, 1, "center", "menu")
-      GS.switch(rifle)
+      GS.switch(Play, nxtlvl, "rifle")
 
 
  --   love.audio.setVolume(self.sliders.x)
