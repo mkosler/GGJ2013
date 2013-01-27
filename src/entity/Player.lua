@@ -53,6 +53,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.safespoty = safespoty or 500
   
   self.arrowpointer = love.graphics.newImage("assets/art/ui_arrow.png")
+  self.heroquad = downright
 end
 
 function Player:collision(o, dx, dy, dt)
@@ -104,7 +105,19 @@ function Player:update(dt)
   end
   
   local angleDeg = math.deg(self.angle)
-  if(angleDeg
+  if(-180 <= angleDeg and angleDeg < -90) then
+    self.heroquad = upleft
+  end
+  if(-90 <= angleDeg and angleDeg  < 0) then
+    self.heroquad = upright
+  end
+  if(0 <= angleDeg and angleDeg < 90) then
+    self.heroquad = downright
+  end
+  if(90 <= angleDeg and angleDeg < 180) then
+    self.heroquad = downleft
+  end
+    
   
   
  -- print("heartbeat cap", self.heartbeatPace)
@@ -233,15 +246,15 @@ function Player:draw()
   love.graphics.setColor(255,255,255)
   local angleToSafe = math.atan2((self.safespoty - self.centery),(self.safespotx - self.centerx))
   --love.graphics.rectangle("fill",self.left,self.top,self.right-self.left,self.bottom-self.top)
-  love.graphics.setColor(255,0,0)
-  love.graphics.circle("fill",self.hitcircle:outcircle())
+  --love.graphics.setColor(255,0,0)
+  --love.graphics.circle("fill",self.hitcircle:outcircle())
   love.graphics.draw(self.arrowpointer,self.imageCenterX,self.imageCenterY,angleToSafe,1,1,0,self.arrowpointer:getWidth()/2)
   if(self.heartFlash) then
-    love.graphics.setColor(255,0,0)
+    love.graphics.setColor(redscale,0,0)
   else
     love.graphics.setColor(255,255,255)
   end
-  love.graphics.drawq(spritesheet,downleft,self.left,self.top,0,1,1,0,0)
+  love.graphics.drawq(spritesheet,self.heroquad,self.left,self.top,0,1,1,0,0)
   --love.graphics.draw(self.heroimg,self.left,self.top,0,1,1,0,0)
   love.graphics.circle("fill",340,500,10)
   love.graphics.setColor(255,255,255)
