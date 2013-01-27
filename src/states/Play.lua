@@ -29,7 +29,7 @@ function Play:update(dt)
   HC:update(dt)-- if collision is weird, put this at end
   Manager:update(dt)
   if Manager.player.finished then
-    GS.switch(ingameoptions, level + 1)
+    GS.switch(InGame, level + 1)
   end
    
   cam:lookAt(Manager.player:getPosition())
