@@ -5,6 +5,8 @@ local Manager = require 'src.Manager'
 local Camera = require 'lib.camera'
 cam = Camera()
 
+local gameover = love.graphics.newImage('assets/art/Game_Over_Screen.png')
+
 function Play:enter(prev, lvl)
   level = lvl or 1
 
@@ -20,6 +22,10 @@ function Play:enter(prev, lvl)
 end
 
 function Play:update(dt)
+  if Manager.player:canRemove() then
+    return
+  end
+
   HC:update(dt)-- if collision is weird, put this at end
   Manager:update(dt)
   if Manager.player.finished then
@@ -37,10 +43,14 @@ function Play:draw()
   Manager:draw()
   cam:detach()
   --love.graphics.print(string.format('Memory (MB): %02.5f', collectgarbage('count') / 1024), 10, 10)
+  if Manager.player:canRemove() then
+    print(Manager.player:canRemove())
+    love.graphics.draw(gameover)
+  end
 end
 
 function Play:keypressed(key, code)
-  if key == 'r' and Manager.player.canRemove() then
+  if key == 'r' and Manager.player:canRemove() then
     GS.switch(Play, level)
   elseif key == 'escape' then
     GS.switch(Title)
