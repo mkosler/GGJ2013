@@ -50,7 +50,7 @@ local title = GS.new()
     self.grid:Label("Sound", 2, 1, 1, 1, "center", "menu")
     self.grid:Label("\n\nStart Level: ___", 2, 3, 1, 1, 'center', "menu")
 
- --   love.audio.setVolume(self.sliders.x)
+ --   love.audio.setVolume(self.sliders.x.value)
 
     if self.grid:Button("Done", 2, 7, 1, 1, "menu") then
       GS.switch(Title)
@@ -75,8 +75,7 @@ local title = GS.new()
     end
     if key == "s" then
       print(self.sliders.x.value)
-      print(self.sliders.y.value)
-      print(self.sliders.z.value)
+
     end
 
 
