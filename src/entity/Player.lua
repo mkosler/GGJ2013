@@ -18,17 +18,23 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = "bazooka"
+  self.weapon = "pistol"
   
   self.bulletTimer = 0
   
-  self.panic = 0
+  self.panic = 100
   
   self.heartbeatPace = 2
   self.heartbeatTimer = 0
-  self.heartbeatSound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_4.mp3")
+  self.heartbeatSound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+  self.heartbeat1 = self.heartbeatSound
+  self.heartbeat2 = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_2.mp3")
+  self.heartbeat3 = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_3.mp3")
+  self.heartbeat4 = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_4.mp3")
   self.heartFlash = false
   self.flashThreshold = 0.1
+  
+  self.nearbyEnemies = {}
   
   self.vx = 0
   self.vy = 0
@@ -63,6 +69,50 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
+  if(self.panic < 0) then -- PLAYER DIES!
+    self.heartbeatSound = nil
+    self.removable = true
+  end
+
+  if(self.panic >= 75) then
+    self.heartbeatSound = self.heartbeat1
+  end
+  
+  if(self.panic >= 50 and self.panic < 75) then
+    self.heartbeatSound = self.heartbeat2
+  end
+  
+  if(self.panic >= 25 and self.panic < 50) then
+    self.heartbeatSound = self.heartbeat3
+  end
+  
+  if(self.panic < 25) then
+    self.heartbeatSound = self.heartbeat4
+  end
+  
+  
+  if((self.panic/100) > 0.2) then
+    self.heartbeatPace = 2 * (self.panic/100)
+  else
+    self.heartbeatPace = 0.45
+  end
+  
+  
+  print("heartbeat cap", self.heartbeatPace)
+  print("heartbeat timer", self.heartbeatTimer)
+  
+  if(self.heartbeatTimer < self.heartbeatPace) then
+    self.heartbeatTimer = self.heartbeatTimer + dt
+  else 
+    self.heartbeatTimer = 0
+    if(self.heartbeatSound) then love.audio.play(self.heartbeatSound) end
+    self.heartFlash = true
+  end
+  
+  if(self.heartbeatTimer > self.flashThreshold) then
+    self.heartFlash = false
+  end
+
   if(self.bulletTimer > 0) then
     self.bulletTimer = self.bulletTimer - dt
   else 
@@ -76,6 +126,10 @@ function Player:update(dt)
         Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1))
         self.bulletTimer = 0.25
         self.fireHeld = false
+      end
+      if(self.weapon == 'smg') then
+        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1))
+        self.bulletTimer = 0.07
       end
       if(self.weapon == 'shotgun') then
         self.fireHeld = false
@@ -113,18 +167,6 @@ function Player:update(dt)
       end
     end
   end
-  
-  if(self.heartbeatTimer < self.heartbeatPace) then
-    self.heartbeatTimer = self.heartbeatTimer + dt
-  else 
-    self.heartbeatTimer = 0
-    love.audio.play(self.heartbeatSound)
-    self.heartFlash = true
-  end
-  
-  if(self.heartbeatTimer > self.flashThreshold) then
-    self.heartFlash = false
-  end
 
   if(self.leftMouseHeld) then
       px, py = love.mouse.getPosition()
@@ -142,6 +184,22 @@ function Player:update(dt)
     py = nil
   end
 
+  local numEnemies = 0;
+  if(self.panic > 0) then
+    for shape in pairs(HC:shapesInRange(self.centerx-100,self.centery-100,self.centerx+100,self.centery+100)) do
+      if(instanceOf(Zombie,shape.parent)) then
+        local a = math.abs(self.centerx - shape.parent.centerx)
+        a = a*a
+        local b = math.abs(self.centery - shape.parent.centery)
+        b = b*b
+        local distance = math.sqrt(a+b)
+        print("distance ",distance)
+        print("panic influence", (100/distance) * dt)
+        self.panic = self.panic - ((100/distance) * dt)
+      end
+    end
+  end
+  print("Panic ", self.panic)
   
   local xshift = (self.vx * dt)
   local yshift = (self.vy * dt)
