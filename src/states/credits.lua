@@ -6,7 +6,7 @@ local title = GS.new()
     self.colors = require 'lib.colors'
     self.gui = require 'lib.quickie'
     self.grid = require 'lib.quickie.grid'
-	background=love.graphics.newImage("assets/art/logo.png")
+	background=love.graphics.newImage("assets/art/mainlogo.png")
 
     self.debugName = "Credits"
     print("Hi")
@@ -14,7 +14,7 @@ local title = GS.new()
   end
 
   function title:enter(previous)
-	background=love.graphics.newImage("assets/art/logo.png")
+	background=love.graphics.newImage("assets/art/mainlogo.png")
 
     local gridschema = {
       columns = { 200, 230, 200 },

@@ -7,12 +7,14 @@ local title = GS.new()
     self.gui = require 'lib.quickie'
     self.grid = require 'lib.quickie.grid'
     self.view = love.graphics.newCanvas(812, 764)
+	background=love.graphics.newImage("assets/art/mainlogo.png")
 
     self.debugName = "Options"
     -- print("init:\t\t " .. self.debugName)
   end
 
   function title:enter(previous)
+	background=love.graphics.newImage("assets/art/mainlogo.png")
 
     local gridschema = {
 
