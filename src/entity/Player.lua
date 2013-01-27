@@ -112,6 +112,22 @@ function Player:update(dt)
   if(self.heartbeatTimer > self.flashThreshold) then
     self.heartFlash = false
   end
+  
+  if(self.panic > 0) then
+    for shape in pairs(HC:shapesInRange(self.centerx-100,self.centery-100,self.centerx+100,self.centery+100)) do
+      if(instanceOf(Zombie,shape.parent)) then
+        local a = math.abs(self.centerx - shape.parent.centerx)
+        a = a*a
+        local b = math.abs(self.centery - shape.parent.centery)
+        b = b*b
+        local distance = math.sqrt(a+b)
+        print("distance ",distance)
+        print("panic influence", (100/distance) * dt)
+        self.panic = self.panic - ((100/distance) * dt)
+      end
+    end
+  end
+  print("Panic ", self.panic)
 
   if(self.bulletTimer > 0) then
     self.bulletTimer = self.bulletTimer - dt
@@ -183,23 +199,6 @@ function Player:update(dt)
     px = nil
     py = nil
   end
-
-  local numEnemies = 0;
-  if(self.panic > 0) then
-    for shape in pairs(HC:shapesInRange(self.centerx-100,self.centery-100,self.centerx+100,self.centery+100)) do
-      if(instanceOf(Zombie,shape.parent)) then
-        local a = math.abs(self.centerx - shape.parent.centerx)
-        a = a*a
-        local b = math.abs(self.centery - shape.parent.centery)
-        b = b*b
-        local distance = math.sqrt(a+b)
-        print("distance ",distance)
-        print("panic influence", (100/distance) * dt)
-        self.panic = self.panic - ((100/distance) * dt)
-      end
-    end
-  end
-  print("Panic ", self.panic)
   
   local xshift = (self.vx * dt)
   local yshift = (self.vy * dt)
