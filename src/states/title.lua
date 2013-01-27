@@ -16,7 +16,6 @@ local title = GS.new()
   end
 
   function title:enter(previous)
-	background=love.graphics.newImage("assets/art/title_screen_0.png")
 
     local gridschema = {
       columns = {150, 10, 300, 10, 150, 10, 150 },
