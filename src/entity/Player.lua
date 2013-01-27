@@ -72,6 +72,8 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
 end
 
 function Player:collision(o, dx, dy, dt)
+  print(o)
+  if o.name then print(o.name) end
   if(instanceOf(Door,o) and o.name == "Destination") then
     self.finished = true
   end

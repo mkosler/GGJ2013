@@ -62,7 +62,7 @@ local title = GS.new()
  --   love.audio.setVolume(self.sliders.x)
 
     if self.grid:Button("Back", 1,8,1,1, "menu") then
-      self.doExit = function () return "ingameoptions" end
+      GS.switch(InGame)
     end
  
   end  
@@ -85,7 +85,7 @@ local title = GS.new()
   function title:keypressed(key, code)
     self.gui.core.keyboard.pressed(key, code)
     if key == "escape" then
-      self.doExit = function () return self.parent end
+      GS.switch(InGame)
     end
     if key == "s" then
       print(self.sliders.x.value)
