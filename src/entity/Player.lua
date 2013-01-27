@@ -5,6 +5,7 @@ local speed = 100
 local bulletSpeed = 500
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
+  print('Player:initialize', centerx, centery, radius, safespotx, safespoty)
   Entity.initialize(self, centerx, centery, radius)
   
   self.left = self.centerx - radius
@@ -51,6 +52,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
 end
 
 function Player:collision(o, dx, dy, dt)
+  print(o)
   if (not(instanceOf(Bullet,o)) and (self.vx > 0 or self.vy > 0)) then
   self.centerx = self.centerx + dx
   self.centery = self.centery + dy
@@ -98,9 +100,6 @@ function Player:update(dt)
   end
   
   
-  print("heartbeat cap", self.heartbeatPace)
-  print("heartbeat timer", self.heartbeatTimer)
-  
   if(self.heartbeatTimer < self.heartbeatPace) then
     self.heartbeatTimer = self.heartbeatTimer + dt
   else 
@@ -121,13 +120,10 @@ function Player:update(dt)
         local b = math.abs(self.centery - shape.parent.centery)
         b = b*b
         local distance = math.sqrt(a+b)
-        print("distance ",distance)
-        print("panic influence", (100/distance) * dt)
         self.panic = self.panic - ((100/distance) * dt)
       end
     end
   end
-  print("Panic ", self.panic)
 
   if(self.bulletTimer > 0) then
     self.bulletTimer = self.bulletTimer - dt
@@ -185,7 +181,11 @@ function Player:update(dt)
   end
 
   if(self.leftMouseHeld) then
-      px, py = love.mouse.getPosition()
+      px, py = cam:worldCoords(love.mouse.getPosition())
+  end
+  if not px or not py or not (200 <= px and px <= 8800 and 200 <= py and py <= 2200) then
+    self.vx, self.vy = 0, 0
+    return
   end
   if(px and py and (math.abs(px - self.imageCenterX) > 5 or math.abs(py - self.imageCenterY) > 5)) then
     local xdiff =  px - self.imageCenterX

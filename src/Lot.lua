@@ -8,6 +8,7 @@ end
 Building = class('Building', Lot)
 
 function Building:initialize(left, top, width, height)
+  print('Building:initialize')
   Lot.initialize(self, left, top)
 
   self.polygon = HC:addPolygon(
@@ -16,6 +17,10 @@ function Building:initialize(left, top, width, height)
     left + width, top + (height / 2),
     left + (width / 2), top + height)
   HC:setPassive(self.polygon)
+end
+
+function Building:clean()
+  HC:remove(self.polygon)
 end
 
 Hospital = class('Hospital', Building)
