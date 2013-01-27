@@ -27,24 +27,13 @@ function Bullet:initialize(startx, starty, vx, vy, damage, decaylimit, splashrad
 end
 
 function Bullet:collision(o, dx, dy, dt)
-  print("bullet collision")
   if not(instanceOf(Player,o)) then
     self.removable=true
   end
   if(self.splashradius > 0 and (math.abs(self.centerx - self.beginx) > 5) and (math.abs(self.centery - self.beginy) > 5)) then
-    print(self.splashradius)
     for shape in pairs(HC:shapesInRange(self.centerx-self.splashradius,self.centery-self.splashradius,self.centerx+self.splashradius,self.centery+self.splashradius)) do
-      print("loop reached")
-       
       if(instanceOf(Zombie,shape.parent)) then
-        print("nearby object is a zombie")
-        print(self.centerx)
-        print(shape.parent.centerx)
-        print(self.splashrdius)
-        print(self.centery)
-        print(shape.parent.centery)
         if((math.abs(self.centerx - shape.parent.centerx) < self.splashradius) and math.abs(self.centery - shape.parent.centery) < self.splashradius) then
-          print("suffering damage")
           shape.parent.lives = shape.parent.lives - self.damage
         end
       end
@@ -62,13 +51,6 @@ function Bullet:update(dt)
   end
   
   if(self.terminatex and self.terminatey) then
-    print("termination check reached")
-    print(self.centerx)
-    print(self.terminatex)
-    print(math.abs(self.centerx - self.terminatex))
-    print(self.centery)
-    print(self.terminatey)
-    print(math.abs(self.centery - self.terminatey))
     if((math.abs(self.centerx - self.terminatey) < 50) and (math.abs(self.centery - self.terminatey) < 50)) then
       
       self.removable = true

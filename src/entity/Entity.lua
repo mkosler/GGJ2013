@@ -25,7 +25,7 @@ function Entity:canRemove()
 end
 
 function Entity:clean()
-  --print(self.hitcircle)
+  print('Entity:clean')
   HC:remove(self.hitcircle)
 end
 

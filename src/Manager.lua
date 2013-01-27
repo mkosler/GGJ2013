@@ -25,6 +25,7 @@ function Manager:remove(o)
 end
 
 function Manager:clean(i)
+  print(i, self.objects[i])
   if self.objects[i].clean then self.objects[i]:clean() end
   table.remove(self.objects, i)
 end
@@ -38,8 +39,8 @@ function Manager:update(dt)
     if v.update then v:update(dt, self.player:getPosition()) end
   end
 
-  for _,v in pairs(self.objects) do
-    if v.canRemove and v:canRemove() then self:remove(v) end
+  for i,v in pairs(self.objects) do
+    if v.canRemove and v:canRemove() then self:clean(i) end
   end
 end
 

@@ -5,7 +5,6 @@ local speed = 100
 local bulletSpeed = 500
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
-  --print('Player:initialize', centerx, centery)
   Entity.initialize(self, centerx, centery, radius)
   
   self.left = self.centerx - radius
@@ -46,7 +45,6 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
 end
 
 function Player:collision(o, dx, dy, dt)
-  --print('Player:collision', o)
   if (not(instanceOf(Bullet,o)) and (self.vx > 0 or self.vy > 0)) then
   self.centerx = self.centerx + dx
   self.centery = self.centery + dy

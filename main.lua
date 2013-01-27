@@ -28,9 +28,9 @@ HC:setCallbacks(collision, endCollision)
 -- [[ ALL THE FILES!!!!!!!!!!! ]]
 require 'src.Map'
 require 'src.Lot'
+require 'src.entity.Entity'
 require 'src.entity.Zombie'
 require 'src.entity.Player'
-require 'src.entity.Entity'
 require 'src.entity.Bullet'
 Title = require 'src.states.Title'
 Play = require 'src.states.Play'

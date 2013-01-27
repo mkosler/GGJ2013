@@ -26,6 +26,14 @@ function Zombie:initialize(centerx, centery, radius, lives)
 	--end
 end
 
+--function Zombie:canRemove()
+  --return self.removable
+--end
+
+--function Zombie:clean()
+  --HC:remove(self.hitcircle)
+--end
+
 function Zombie:collision(o, dx, dy, dt)
 	--change for building and people if have time	
   if not(self.stunned) then
@@ -45,10 +53,10 @@ function Zombie:collision(o, dx, dy, dt)
   if(instanceOf(Bullet, o) and not(o.hasDamaged)) then
     o.hasDamaged = true
     self.lives=self.lives-o.damage
-    print('Lost life:', self.lives)
-    if self.lives<=0 then
-      self.removable=true
-    end
+  end
+
+  if self.lives<=0 then
+    self.removable=true
   end
 end
 
