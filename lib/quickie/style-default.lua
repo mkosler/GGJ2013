@@ -11,7 +11,8 @@ local fonts = {
 	title = love.graphics.newFont("assets/fonts/visitor1.ttf", 120),
 	subtitle = love.graphics.newFont("assets/fonts/visitor1.ttf", 30),
 	plain = love.graphics.newFont("assets/fonts/visitor1.ttf", 20),
-	menu = love.graphics.newFont("assets/fonts/visitor1.ttf", 18)
+	menu = love.graphics.newFont("assets/fonts/visitor1.ttf", 18),
+	center = love.graphics.newFont("assets/fonts/visitor1.ttf", 18)
 }
 
 local borderwidth = 0
@@ -30,6 +31,7 @@ local function Button(state, title, x,y,w,h, font)
 	colorStack:push(unpack(c.fg))
 	local previousFont = love.graphics.getFont()
 	local f = fonts[font]
+	print(f, font)
   love.graphics.setFont(f)
 	love.graphics.print(title, x + (w-f:getWidth(title))/2, y + (h-f:getHeight(title))/2)
 	love.graphics.setFont(previousFont)
