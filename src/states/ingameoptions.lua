@@ -7,7 +7,7 @@ local title = GS.new()
     self.gui = require 'lib.quickie'
     self.grid = require 'lib.quickie.grid'
 
-    self.view = love.graphics.newCanvas(812, 764)
+    self.view = love.graphics.newCanvas(800, 600)
 
     self.debugName = "In Game Options"
     -- print("init:\t\t " .. self.debugName)
@@ -66,6 +66,7 @@ local title = GS.new()
   end
 
   function title:draw()
+love.graphics.setColor( 255, 255, 255)
 	love.graphics.draw(background)
     self.gui.core.draw()
 
