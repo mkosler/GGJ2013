@@ -5,7 +5,8 @@ local Manager = require 'src.Manager'
 local Camera = require 'lib.camera'
 cam = Camera()
 
-function Play:enter(prev, lvl)
+function Play:enter(prev, lvl, weapon)
+  
   level = lvl or 1
 
   HC:clear()
@@ -16,14 +17,14 @@ function Play:enter(prev, lvl)
   local sx, sy = m:getSource()
   local dx, dy = m:getDestination()
 
-  Manager:addPlayer(Player:new(sx, sy, 10, dx, dy))
+  Manager:addPlayer(Player:new(sx, sy, 10, dx, dy, weapon))
 end
 
 function Play:update(dt)
   HC:update(dt)-- if collision is weird, put this at end
   Manager:update(dt)
   if Manager.player.finished then
-    GS.switch(Play, level + 1)
+    GS.switch(ingameoptions, level + 1)
   end
    
   cam:lookAt(Manager.player:getPosition())

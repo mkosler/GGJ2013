@@ -24,7 +24,7 @@ local flameplaying = false
 local flametimer = 0
 
 
-function Player:initialize(centerx, centery, radius, safespotx, safespoty)
+function Player:initialize(centerx, centery, radius, safespotx, safespoty, weapon)
   Entity.initialize(self, centerx, centery, radius)
   
   self.left = self.centerx - radius
@@ -38,7 +38,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = "flame"
+  self.weapon = weapon or "pistol"
   
   self.bulletTimer = 0
   self.frameTimer = 0
@@ -93,6 +93,13 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
+
+  if(self.panic < 0) then -- PLAYER DIES!
+    self.heartbeatSound = nil
+    self.removable = true
+    return
+  end
+  
   if (self.frameTimer > (1/6)) then
     self.frameTimer = 0
   else
@@ -113,10 +120,7 @@ function Player:update(dt)
  
   
   
-  if(self.panic < 0) then -- PLAYER DIES!
-    self.heartbeatSound = nil
-    self.removable = true
-  end
+  
 
   if(self.panic >= 75) then
     self.heartbeatSound = self.heartbeat1

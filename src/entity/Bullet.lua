@@ -39,7 +39,7 @@ function Bullet:collision(o, dx, dy, dt)
     for shape in pairs(HC:shapesInRange(self.centerx-self.splashradius,self.centery-self.splashradius,self.centerx+self.splashradius,self.centery+self.splashradius)) do
       if(instanceOf(Zombie,shape.parent)) then
         if((math.abs(self.centerx - shape.parent.centerx) < self.splashradius) and math.abs(self.centery - shape.parent.centery) < self.splashradius) then
-          shape.parent.lives = shape.parent.lives - self.damage
+          shape.parent:collision(self,0,0,0)
         end
       end
     end
