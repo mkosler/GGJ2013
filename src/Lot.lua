@@ -45,24 +45,39 @@ function Building:clean()
   HC:remove(self.polygon)
 end
 
---Door = class('Door')
+Door = class('Door')
 
---function Door:initialize(left, top)
-  --self.polygon = HC:addRectangle(left, top, 64, 70)
-  --self.polygon.parent = self
+function Door:initialize(left, top, name)
+  self.polygon = HC:addRectangle(left, top, 64, 70)
+  self.polygon.parent = self
 
-  --HC:setPassive(self.polygon)
---end
+  self.name = name
 
---function Door:clean()
-  --HC:remove(self.polygon)
---end
+  HC:setPassive(self.polygon)
+end
+
+function Door:clean()
+  HC:remove(self.polygon)
+end
+
+function Door:draw()
+  self.polygon:draw('line')
+end
 
 Hospital = class('Hospital', Building)
 
-function Hospital:initialize(left, top, width, height, image, quad)
+function Hospital:initialize(left, top, width, height, image, quad, name)
   Building.initialize(self, left, top, width, height, image, quad)
 
-  --Manager:add(Door:new(left + 44, top + 143))
-  --Manager:add(Door:new(left + 44 + 106, top + 143))
+  self.doors = {}
+  table.insert(self.doors, Door:new(left + 44, top + 75))
+  table.insert(self.doors, Door:new(left + 44 + 166, top + 75))
+
+  Manager:add(self.doors[1])
+  Manager:add(self.doors[2])
+end
+
+function Hospital:setName(name)
+  self.name = name
+  for _,v in pairs(self.doors) do v.name = name end
 end

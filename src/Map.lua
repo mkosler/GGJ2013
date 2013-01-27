@@ -111,6 +111,8 @@ function Map:initialize(size)
   self.data = randomize(self.size, 3)
 
   self.hospitals = setBuildings(self.size, bImg, 320, 160, self.data, self.quad)
+  self.hospitals[1].name = 'Source'
+  self.hospitals[2].name = 'Destination'
   self.isb = setInterSpriteBatch(self.size, iImg, data)
 end
 
