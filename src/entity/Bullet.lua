@@ -59,7 +59,7 @@ function Bullet:update(dt)
   end
   
   if(self.terminatex and self.terminatey) then
-    if((math.abs(self.centerx - self.terminatey) < 50) and (math.abs(self.centery - self.terminatey) < 50)) then
+    if((math.abs(self.centerx - self.terminatex) < 5) and (math.abs(self.centery - self.terminatey) < 5)) then
       
       self.removable = true
       self:collision(o,0,0,0)

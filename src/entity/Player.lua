@@ -17,8 +17,8 @@ local pistolsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Sp
 local smgsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
 local shotgunsound = love.audio.newSource("assets/sound/Sound_Gun_Shot_1.mp3")
 local flamesound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
-local riflesound = love.audio.newSource("assets/sound/Sound_Gun_Shot_1.mp3")
-local bazookasound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local riflesound = love.audio.newSource("assets/sound/Sound_Gun_Rifle.mp3")
+local bazookasound = love.audio.newSource("assets/sound/Sound_Gun_Bazooka.mp3")
 
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
@@ -119,10 +119,10 @@ function Player:update(dt)
   end
   
   
-  if((self.panic/100) > 0.2) then
+  if((self.panic/100) > 0.1) then
     self.heartbeatPace = 2 * (self.panic/100)
   else
-    self.heartbeatPace = 0.45
+    self.heartbeatPace = 0.2
   end
   
   
@@ -195,7 +195,10 @@ function Player:update(dt)
     self.heartbeatTimer = self.heartbeatTimer + dt
   else 
     self.heartbeatTimer = 0
-    if(self.heartbeatSound) then love.audio.play(self.heartbeatSound) end
+    if(self.heartbeatSound) then 
+      love.audio.stop(self.heartbeatSound)
+      love.audio.play(self.heartbeatSound) 
+    end
     self.heartFlash = true
   end
   
@@ -267,7 +270,9 @@ function Player:update(dt)
         self.bulletTimer = 1.5
       end
       if(self.weapon == 'bazooka') then
-        Manager:add(Bullet:new(self.centerx,self.centery,0.75*vx,0.75*vy,10,10,7,love.mouse.getX(),love.mouse.getY()))
+        if(bazookasound) then love.audio.play(bazookasound) end
+        local termx, termy = cam:worldCoords(love.mouse.getX(),love.mouse.getY())
+        Manager:add(Bullet:new(self.centerx,self.centery,0.75*vx,0.75*vy,10,10,7,termx,termy))
         self.bulletTimer = 2.5
       end
     end
