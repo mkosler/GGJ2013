@@ -35,7 +35,7 @@ local function randomize(size, numBlockTypes)
     local row, col = 0, 0
     repeat
       row, col = math.random(size), math.random(size)
-    until base[row][col] ~= 3
+    until base[row][col] ~= 3 and row ~= 1 and row ~= 20 and col ~= 1 and col ~= 20
     base[row][col] = 3
   end
 
@@ -52,6 +52,7 @@ local function setSprite(sb, x, y, quad)
   end
 end
 
+__hospitals = {}
 local function setBuildingSpriteBatch(size, image, tw, th, data, quad)
   local sb = love.graphics.newSpriteBatch(image)
 
@@ -70,11 +71,12 @@ local function setBuildingSpriteBatch(size, image, tw, th, data, quad)
       setSprite(sb, x, y, quad[index])
 
       if index == 1 then
-        Manager:add(Lot:new(x, y + 80))
+        Manager:addBlock(Lot:new(x, y + 80))
       elseif index == 2 then
-        Manager:add(Building:new(x, y + 80, tw, th))
+        Manager:addBlock(Building:new(x, y + 80, tw, th))
       elseif index == 3 then
-        Manager:add(Hospital:new(x, y + 80, tw, th))
+        table.insert(__hospitals, { x = x, y = y + 80 })
+        Manager:addBlock(Hospital:new(x, y + 80, tw, th))
       end
     end
   end
@@ -117,6 +119,15 @@ end
 function Map:draw()
   love.graphics.draw(self.isb)
   love.graphics.draw(self.bsb)
+end
+
+function Map:getSource()
+  print(__hospitals[1].x, __hospitals[1].y)
+  return __hospitals[1].x, __hospitals[1].y
+end
+
+function Map:getDestination()
+  return __hospitals[2].x, __hospitals[2].y
 end
 
 --Map = class('Map')

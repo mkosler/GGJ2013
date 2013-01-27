@@ -10,6 +10,7 @@ local downleft = love.graphics.newQuad(40, 0, 20, 40, 80, 40)
 local downright = love.graphics.newQuad(60, 0, 20, 40, 80, 40)
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
+  print('Player:initialize', centerx, centery, radius, safespotx, safespoty)
   Entity.initialize(self, centerx, centery, radius)
   
   self.left = self.centerx - radius
@@ -55,6 +56,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
 end
 
 function Player:collision(o, dx, dy, dt)
+  print(o)
   if (not(instanceOf(Bullet,o)) and (self.vx > 0 or self.vy > 0)) then
   self.centerx = self.centerx + dx
   self.centery = self.centery + dy
@@ -189,7 +191,11 @@ function Player:update(dt)
   end
 
   if(self.leftMouseHeld) then
-      px, py = love.mouse.getPosition()
+      px, py = cam:worldCoords(love.mouse.getPosition())
+  end
+  if not px or not py or not (200 <= px and px <= 8800 and 200 <= py and py <= 2200) then
+    self.vx, self.vy = 0, 0
+    return
   end
   if(px and py and (math.abs(px - self.imageCenterX) > 5 or math.abs(py - self.imageCenterY) > 5)) then
     local xdiff =  px - self.imageCenterX

@@ -1,11 +1,9 @@
-local Camera = require 'lib.camera'
-
 local Manager = class('Manager')
 
 function Manager:initialize()
-  self.camera = Camera()
   self.player = {}
-  self.objects = objects or {}
+  self.objects = {}
+  self.blocks = {}
 end
 
 function Manager:add(o)
@@ -14,6 +12,11 @@ end
 
 function Manager:addPlayer(p)
   self.player = p
+end
+
+function Manager:addBlock(b)
+  print('Adding block')
+  table.insert(self.blocks, b)
 end
 
 function Manager:remove(o)
@@ -30,10 +33,13 @@ function Manager:clean(i)
   table.remove(self.objects, i)
 end
 
+function Manager:cleanBlock(i)
+  if self.blocks[i].clean then self.blocks[i]:clean() end
+  table.remove(self.blocks, i)
+end
+
 function Manager:update(dt)
   if self.player then self.player:update(dt) end
-
-  self.camera:lookAt(self.player:getPosition())
 
   for _,v in pairs(self.objects) do
     if v.update then v:update(dt, self.player:getPosition()) end
@@ -71,6 +77,9 @@ function Manager:clear()
   if self.player.clean then self.player:clean() end
   for i,v in pairs(self.objects) do
     self:clean(i)
+  end
+  for i,v in pairs(self.blocks) do
+    self:cleanBlock(i)
   end
 end
 
