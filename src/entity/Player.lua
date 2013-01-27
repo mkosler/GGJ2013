@@ -4,10 +4,15 @@ Player = class('Player',Entity)
 local speed = 100
 local bulletSpeed = 500
 local spritesheet = love.graphics.newImage("assets/art/sheet_sprite_hero_walk.png")
-local upleft = love.graphics.newQuad(0, 0, 20, 40, 80, 80)
-local upright = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
-local downleft = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
-local downright = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
+local upleft = love.graphics.newQuad(0, 40, 20, 40, 80, 80)
+local upright = love.graphics.newQuad(20, 40, 20, 40, 80, 80)
+local downleft = love.graphics.newQuad(40, 40, 20, 40, 80, 80)
+local downright = love.graphics.newQuad(60, 40, 20, 40, 80, 80)
+local upleft2 = love.graphics.newQuad(0, 0, 20, 40, 80, 80)
+local upright2 = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
+local downleft2 = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
+local downright2 = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
+
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   Entity.initialize(self, centerx, centery, radius)
@@ -26,6 +31,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.weapon = "pistol"
   
   self.bulletTimer = 0
+  self.frameTimer = 0
   
   self.panic = 100
   
@@ -39,7 +45,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.heartFlash = false
   self.flashThreshold = 0.1
   
-  self.nearbyEnemies = {}
+  self.facing = "dr"
   
   self.vx = 0
   self.vy = 0
@@ -74,6 +80,13 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
+  if (self.frameTimer > (1/6)) then
+    self.frameTimer = 0
+  else
+    self.frameTimer = self.frameTimer + dt
+  end
+  
+  
   if(self.panic < 0) then -- PLAYER DIES!
     self.heartbeatSound = nil
     self.removable = true
@@ -102,20 +115,70 @@ function Player:update(dt)
     self.heartbeatPace = 0.45
   end
   
+  
   local angleDeg = math.deg(self.angle)
   if(-180 <= angleDeg and angleDeg < -90) then
-    self.heroquad = upleft
+    self.facing = "ul"
   end
   if(-90 <= angleDeg and angleDeg  < 0) then
-    self.heroquad = upright
+    self.facing = "ur"
   end
   if(0 <= angleDeg and angleDeg < 90) then
-    self.heroquad = downright
+    self.facing = "dr"
   end
   if(90 <= angleDeg and angleDeg < 180) then
-    self.heroquad = downleft
+    self.facing = "dl"
   end
-    
+      
+  if(self.facing == "ul") then
+    if(self.heroquad == upleft  and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = upleft2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = upleft
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = upleft
+    end
+  end
+  if(self.facing == 'ur') then
+    if(self.heroquad == upright and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = upright2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = upright
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = upright
+    end
+  end
+  if(self.facing == 'dl') then
+    print(self.heroquad == downleft)
+    if(self.heroquad == downleft and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = downleft2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = downleft
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = downleft
+    end
+  end
+  if(self.facing == 'dr') then
+    if(self.heroquad == downright and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = downright2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = downright
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = downright
+    end
+  end
   
   
  -- print("heartbeat cap", self.heartbeatPace)
