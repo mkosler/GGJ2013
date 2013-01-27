@@ -23,7 +23,8 @@ function Play:update(dt)
   HC:update(dt)-- if collision is weird, put this at end
   Manager:update(dt)
   if Manager.player.finished then
-    GS.switch(Play, level + 1)
+    print('finished')
+    GS.switch(InGame, level + 1)
   end
    
   cam:lookAt(Manager.player:getPosition())
@@ -42,7 +43,7 @@ function Play:keypressed(key, code)
   if key == 'r' and Manager.player.canRemove() then
     GS.switch(Play, level)
   elseif key == 'escape' then
-    -- Add title menu
+    GS.switch(Title)
   end
   Manager:keypressed(key, code)
 end

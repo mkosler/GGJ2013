@@ -72,7 +72,13 @@ local function setBuildings(size, image, tw, th, data, quad)
         Manager:addBlock(Building:new(x, y + 80, tw, th, image, quad[index]))
       elseif index == 3 then
         table.insert(hospitals, { x = x, y = y + 80 })
-        Manager:addBlock(Hospital:new(x, y + 80, tw, th, image, quad[index]))
+        local hospital = Hospital:new(x, y + 80, tw, th, image, quad[index])
+        Manager:addBlock(hospital)
+        if #hospitals == 1 then
+          hospital:setName('Source')
+        elseif #hospitals == 2 then
+          hospital:setName('Destination')
+        end
       end
     end
   end
@@ -109,8 +115,6 @@ function Map:initialize(size)
   self.data = randomize(self.size, 3)
 
   self.hospitals = setBuildings(self.size, bImg, 320, 160, self.data, self.quad)
-  self.hospitals[1].name = 'Source'
-  self.hospitals[2].name = 'Destination'
   self.isb = setInterSpriteBatch(self.size, iImg, data)
 end
 

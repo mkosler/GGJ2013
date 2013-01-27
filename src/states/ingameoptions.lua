@@ -98,4 +98,4 @@ local title = GS.new()
     end
   end
 
-  return Play
+  return title
