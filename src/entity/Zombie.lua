@@ -1,5 +1,10 @@
 Zombie = class('Zombie', Entity)
 local speed=30
+local spritesheet = love.graphics.newImage("assets/art/sheet_sprite_zombie_walk.png")
+local down = love.graphics.newQuad(0, 0, 20, 40, 80, 80)
+local up = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
+local left = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
+local right = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
 
 function Zombie:initialize(centerx, centery, radius, lives)
   Entity.initialize(self,centerx,centery,radius)
@@ -20,10 +25,14 @@ function Zombie:initialize(centerx, centery, radius, lives)
   self.hitcircle.parent = self
   self.vx = 0
   self.vy = 0
+  
+  self.angle = 0
 
 	if speed < 80 then
     speed = speed + level*5
 	end
+  
+  self.quad = downright
 end
 
 --function Zombie:canRemove()
@@ -75,9 +84,9 @@ function Zombie:update(dt, playerX, playerY)
   if not(self.stunned) then
     local diffX= playerX-self.centerx
     local diffY = playerY-self.bottom
-    local angle = math.atan2(diffY,diffX)
-    self.vx = speed * math.cos(angle)
-    self.vy = speed * math.sin(angle)
+    self.angle = math.atan2(diffY,diffX)
+    self.vx = speed * math.cos(self.angle)
+    self.vy = speed * math.sin(self.angle)
   end
   
   local xshift = (self.vx * dt)
@@ -92,10 +101,26 @@ function Zombie:update(dt, playerX, playerY)
   self.imageCenterY = self.top + ((self.bottom - self.top)/2)
   self.hitcircle:moveTo(self.centerx,self.centery)
   
+ 
+  local angleDeg = math.deg(self.angle)
+  if(-135 <= angleDeg and angleDeg < -45) then
+    self.quad = up
+  end
+  if(-45 <= angleDeg and angleDeg  < 45) then
+    self.quad = right
+  end
+  if(45 <= angleDeg and angleDeg < 135) then
+    self.quad = down
+  end
+  if((135 < angleDeg and angleDeg <= 180) or (-180 <= angleDeg and angleDeg < -135)) then
+    self.quad = left
+  end
+  
 end
 
 function Zombie:draw()
-	love.graphics.setColor(168,133,37)
-	love.graphics.rectangle("fill",self.left,self.top,self.right-self.left,self.bottom-self.top)
-  love.graphics.circle("fill",self.hitcircle:outcircle())
+	-- love.graphics.setColor(168,133,37)
+	-- love.graphics.rectangle("fill",self.left,self.top,self.right-self.left,self.bottom-self.top)
+  -- love.graphics.circle("fill",self.hitcircle:outcircle())
+  love.graphics.drawq(spritesheet,self.quad,self.left,self.top,0,1,1,0,0)
 end
