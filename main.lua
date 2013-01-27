@@ -1,8 +1,6 @@
+local assert = assert
 math.randomseed(os.time())
 math.random(); math.random(); math.random();
-
-
---- DERP
 
 require 'lib.middleclass'
 GS = require 'lib.gamestate'
@@ -35,14 +33,24 @@ require 'src.entity.Entity'
 require 'src.entity.Zombie'
 require 'src.entity.Player'
 require 'src.entity.Bullet'
-require 'src.Lot'
-Title = require 'src.states.Title'
+Credits = require 'src.states.credits'
+InGame = require 'src.states.title'
+TitleOptions = require 'src.states.titleoptions'
 Play = require 'src.states.Play'
+Upgrades = require 'src.states.upgrades'
+Title = require 'src.states.title'
 --Options = require 'src.states.Options'
 
-function love.load()
-  love.graphics.setBackgroundColor(104, 104, 104)
 
+function love.load ()
   GS.registerEvents()
-  GS.switch(Play)
+
+
+  love.graphics.setMode(love.graphics.getMode())
+  love.graphics.setBackgroundColor(104, 104, 104)
+  love.graphics.setFont(love.graphics.newFont(16))
+  -- load libs
+
+  GS.switch(Title)
 end
+
