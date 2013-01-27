@@ -46,9 +46,9 @@ local title = GS.new()
       return self.doExit() 
     end 
 
-    self.grid:Slider(self.sliders.x, 2, 3, 1, 1, false) 
-    self.grid:Label("Sound", 2, 1, 1, 1, "center", "menu")
-    self.grid:Label("\n\nStart Level: ___", 2, 3, 1, 1, 'center', "menu")
+    self.grid:Slider(self.sliders.x, 2, 5, 1, 1, false) 
+    self.grid:Label("Sound", 2, 3, 1, 1, "center", "menu")
+    self.grid:Label("Start Level: ___", 2, 1, 1, 1, 'center', "menu")
 
  --   love.audio.setVolume(self.sliders.x.value)
 
