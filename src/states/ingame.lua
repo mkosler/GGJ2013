@@ -95,7 +95,7 @@ return function (state)
   function state:keypressed(key, code)
     self.gui.core.keyboard.pressed(key, code)
     if key == "escape" then
-      self.doExit = function () return self.parent end
+      GS.switch(Title)
     end
     if key == "s" then
       print(self.sliders.x.value)

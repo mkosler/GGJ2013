@@ -6,7 +6,7 @@ local title = GS.new()
     self.colors = require 'lib.colors'
     self.gui = require 'lib.quickie'
     self.grid = require 'lib.quickie.grid'
-    self.view = love.graphics.newCanvas(812, 764)
+    self.view = love.graphics.newCanvas(800, 600)
 	background=love.graphics.newImage("assets/art/mainlogo.png")
 
     self.debugName = "Options"
@@ -18,13 +18,13 @@ local title = GS.new()
 
     local gridschema = {
 
-      columns = { 20, 200, 10, 100, 10, 812 },
-      rows = { 20, 20, 10, 20, 10, 20, 10, 538 },
+      columns = { 20, 230, 10, 100, 10, 20 },
+      rows = { 20, 20, 10, 20, 10, 20, 30, 10 },
       alignment = {
         horizontal = "left",
         vertical = "top"
       },
-      margin = { left = 250, top = 300, right = 130, bottom = 130 }
+      margin = { left = 285, top = 300, right = 130, bottom = 130 }
     }
     self.grid:init(self.gui, gridschema)
 
@@ -59,14 +59,9 @@ local title = GS.new()
   end  
 
   function title:draw()
-    if self.resetView then
-      love.graphics.setCanvas(self.view)
-      self.view:clear()
-      self.colors:pushRandom()
-      self.colors:pop()
-      love.graphics.setCanvas()
-      self.resetView = false
-    end
+	love.graphics.setColor( 255, 255, 255)
+
+  love.graphics.draw(background)
     self.gui.core.draw()
 
     if self.drawGrid then self.grid:TestDrawGrid() end
@@ -76,7 +71,7 @@ local title = GS.new()
   function title:keypressed(key, code)
     self.gui.core.keyboard.pressed(key, code)
     if key == "escape" then
-      self.doExit = function () return self.parent end
+    	GS.switch(Title)
     end
     if key == "s" then
       print(self.sliders.x.value)

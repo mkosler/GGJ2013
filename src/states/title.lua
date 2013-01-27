@@ -20,12 +20,12 @@ local title = GS.new()
 
     local gridschema = {
       columns = {150, 10, 150, 10, 150, 10, 150 },
-      rows = { 100, 20, 60, 40, 30, 10, 30, 10, 30 },
+      rows = { 100, 20, 60, 5, 5, 10, 30, 10, 30, 10, 30 },
       alignment = {
         horizontal = "center",
         vertical = "top"
       },
-      margin = { left = 0, top = 130, right = 0, bottom = 0 }
+      margin = { left = 0, top = 175, right = 0, bottom = 0 }
     }
     self.grid:init(self.gui, gridschema)
     -- print("enter:\t\t " .. self.debugName)
@@ -46,17 +46,22 @@ local title = GS.new()
   end
 
 
-    if self.grid:Button("Start Game", 3, 4, 3, 1, "menu") then
+    if self.grid:Button("Start Game", 3, 3, 3, 1, "menu") then
     	GS.switch(Play)
 	end
 
-    if self.grid:Button("Options", 3, 6, 3, 1, "menu") then
+    if self.grid:Button("Options", 3, 7, 3, 1, "menu") then
       GS.switch(TitleOptions)
     end
 
-    if self.grid:Button("About", 3, 8, 3, 1, "menu") then
+    if self.grid:Button("About", 3, 11, 3, 1, "menu") then
 print(Credits)
       GS.switch(Credits)
+    end
+
+   if self.grid:Button("Instructions", 3, 9, 3, 1, "menu") then
+print(Instructions)
+      GS.switch(Instructions)
     end
 
   end
@@ -70,6 +75,7 @@ background=love.graphics.newImage("assets/art/mainlogo.png")
 
     self.gui.core.draw()
 end
+
     if self.drawGrid then self.grid:TestDrawGrid() end
   end
 

@@ -34,11 +34,12 @@ require 'src.entity.Zombie'
 require 'src.entity.Player'
 require 'src.entity.Bullet'
 Credits = require 'src.states.credits'
-InGame = require 'src.states.title'
+InGame = require 'src.states.ingameoptions'
 TitleOptions = require 'src.states.titleoptions'
 Play = require 'src.states.Play'
 Upgrades = require 'src.states.upgrades'
 Title = require 'src.states.title'
+Instructions = require 'src.states.instructions'
 --Options = require 'src.states.Options'
 
 
