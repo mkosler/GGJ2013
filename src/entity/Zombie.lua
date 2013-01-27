@@ -1,10 +1,14 @@
 Zombie = class('Zombie', Entity)
 local speed=30
 local spritesheet = love.graphics.newImage("assets/art/sheet_sprite_zombie_walk.png")
-local down = love.graphics.newQuad(0, 0, 20, 40, 80, 80)
-local up = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
-local left = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
-local right = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
+local down = love.graphics.newQuad(0, 40, 20, 40, 80, 80)
+local up = love.graphics.newQuad(20, 40, 20, 40, 80, 80)
+local left = love.graphics.newQuad(40, 40, 20, 40, 80, 80)
+local right = love.graphics.newQuad(60, 40, 20, 40, 80, 80)
+local down2 = love.graphics.newQuad(0, 0, 20, 40, 80, 80)
+local up2 = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
+local left2 = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
+local right2 = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
 
 function Zombie:initialize(centerx, centery, radius, lives)
   Entity.initialize(self,centerx,centery,radius)
@@ -18,6 +22,7 @@ function Zombie:initialize(centerx, centery, radius, lives)
   self.imageCenterY = self.top + ((self.bottom - self.top)/2)
   
   self.timer = 0
+  self.frameTimer = 0
   self.stunned = false
   
   self.facing = 'd'
@@ -34,7 +39,7 @@ function Zombie:initialize(centerx, centery, radius, lives)
     speed = speed + level*5
 	end
   
-  self.quad = downright
+  self.quad = down
 end
 
 --function Zombie:canRemove()
@@ -76,6 +81,12 @@ end
 
 function Zombie:update(dt, playerX, playerY)
 
+  if (self.frameTimer > (1/6)) then
+    self.frameTimer = 0
+  else
+    self.frameTimer = self.frameTimer + dt
+  end
+
   if(self.timer > 0) then
     self.timer = self.timer - dt
     if(self.timer <= 0 ) then
@@ -109,76 +120,61 @@ function Zombie:update(dt, playerX, playerY)
     self.facing = 'u'
   end
   if(-45 <= angleDeg and angleDeg  < 45) then
-    self.quad = 'r'
+    self.facing = 'r'
   end
   if(45 <= angleDeg and angleDeg < 135) then
-    self.quad = 'd'
+    self.facing = 'd'
   end
   if((135 < angleDeg and angleDeg <= 180) or (-180 <= angleDeg and angleDeg < -135)) then
-    self.quad = 'l'
-  end
-  
-  local angleDeg = math.deg(self.angle)
-  if(-180 <= angleDeg and angleDeg < -90) then
-    self.facing = "ul"
-  end
-  if(-90 <= angleDeg and angleDeg  < 0) then
-    self.facing = "ur"
-  end
-  if(0 <= angleDeg and angleDeg < 90) then
-    self.facing = "dr"
-  end
-  if(90 <= angleDeg and angleDeg < 180) then
-    self.facing = "dl"
+    self.facing = 'l'
   end
       
-  if(self.facing == "ul") then
-    if(self.heroquad == upleft  and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
-      self.heroquad = upleft2
+  if(self.facing == "u") then
+    if(self.quad == up  and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.quad = up2
     else
       if(self.frameTimer == 0) then
-        self.heroquad = upleft
+        self.quad = up
       end
     end
     if(self.vx == 0 and self.vy == 0) then
-      self.heroquad = upleft
+      self.quad = up
     end
   end
-  if(self.facing == 'ur') then
-    if(self.heroquad == upright and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
-      self.heroquad = upright2
+  if(self.facing == 'r') then
+    if(self.quad == right and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.quad = right2
     else
       if(self.frameTimer == 0) then
-        self.heroquad = upright
+        self.quad = right
       end
     end
     if(self.vx == 0 and self.vy == 0) then
-      self.heroquad = upright
+      self.quad = right
     end
   end
-  if(self.facing == 'dl') then
-    print(self.heroquad == downleft)
-    if(self.heroquad == downleft and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
-      self.heroquad = downleft2
+  if(self.facing == 'd') then
+    if(self.quad == down and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.quad = down2
     else
       if(self.frameTimer == 0) then
-        self.heroquad = downleft
+        self.quad = down
       end
     end
     if(self.vx == 0 and self.vy == 0) then
-      self.heroquad = downleft
+      self.quad = down
     end
   end
-  if(self.facing == 'dr') then
-    if(self.heroquad == downright and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
-      self.heroquad = downright2
+  if(self.facing == 'l') then
+    if(self.quad == left and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.quad = left2
     else
       if(self.frameTimer == 0) then
-        self.heroquad = downright
+        self.quad = left
       end
     end
     if(self.vx == 0 and self.vy == 0) then
-      self.heroquad = downright
+      self.quad = left
     end
   end
   

@@ -155,7 +155,6 @@ function Player:update(dt)
     end
   end
   if(self.facing == 'dl') then
-    print(self.heroquad == downleft)
     if(self.heroquad == downleft and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
       self.heroquad = downleft2
     else
