@@ -48,7 +48,7 @@ local title = GS.new()
 
     self.grid:Label("Current Level: ", 4, 1, 1, 1, "center", "menu")
     if self.grid:Button("Upgrades: ", 4,2,1,1, 'center', "menu") then
-      self.doExit = function () return "upgrades" end
+    	GS.switch(Upgrades)
     end
    
     self.grid:Label("Sound", 4, 3, 1, 1, "center", "menu")
