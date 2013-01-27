@@ -13,12 +13,15 @@ local upright2 = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
 local downleft2 = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
 local downright2 = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
 
-local pistolsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
-local smgsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
-local shotgunsound = love.audio.newSource("assets/sound/Sound_Gun_Shot_1.mp3")
-local flamesound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local pistolsound = love.audio.newSource("assets/sound/Sound_Gun_Pistol.mp3")
+local smgsound = love.audio.newSource("assets/sound/Sound_Gun_SMG_Single.mp3")
+local shotgunsound = love.audio.newSource("assets/sound/Sound_Gun_Shotgun.mp3")
+local flamesound = love.audio.newSource("assets/sound/Sound_Gun_Flame_Loop.mp3")
 local riflesound = love.audio.newSource("assets/sound/Sound_Gun_Rifle.mp3")
 local bazookasound = love.audio.newSource("assets/sound/Sound_Gun_Bazooka.mp3")
+
+local flameplaying = false
+local flametimer = 0
 
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
@@ -35,7 +38,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = "bazooka"
+  self.weapon = "flame"
   
   self.bulletTimer = 0
   self.frameTimer = 0
@@ -95,6 +98,19 @@ function Player:update(dt)
   else
     self.frameTimer = self.frameTimer + dt
   end
+  
+  if(flamePlaying) then
+    if(self.flameTimer > 3.4) then
+      self.flameTimer = 0
+      if(flameSound) then 
+        love.audio.stop(flameSound)
+        love.audio.play(flameSound)
+      end
+    else
+      self.flameTimer = self.flameTimer + dt
+    end
+  end
+ 
   
   
   if(self.panic < 0) then -- PLAYER DIES!
@@ -223,56 +239,79 @@ function Player:update(dt)
     self.bulletTimer = self.bulletTimer - dt
   else 
     if(self.fireHeld) then
-      local cameracenterx, cameracentery = cam:cameraCoords(self.centerx,self.centery)
+      local cameracenterx, cameracentery = cam:cameraCoords(self.imageCenterX,self.imageCenterY)
       local xdiff =  love.mouse.getX() - cameracenterx
       local ydiff = love.mouse.getY() - cameracentery
       local angle = math.atan2(ydiff,xdiff)
       local vx = bulletSpeed * math.cos(angle)
       local vy = bulletSpeed * math.sin(angle)
       if(self.weapon == 'pistol') then
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1))
+        if(pistolsound) then 
+          love.audio.stop(pistolsound)
+          love.audio.play(pistolsound)
+        end
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1))
         self.bulletTimer = 0.25
         self.fireHeld = false
       end
       if(self.weapon == 'smg') then
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1))
+        if(smgsound) then 
+          love.audio.stop(smgsound)
+          love.audio.play(smgsound)
+        end
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1))
         self.bulletTimer = 0.07
       end
       if(self.weapon == 'shotgun') then
-        if(shotgunsound) then love.audio.play(shotgunsound) end
+        if(shotgunsound) then 
+          love.audio.stop(shotgunsound)
+          love.audio.play(shotgunsound) 
+        end
         self.fireHeld = false
         self.bulletTimer = 0.4
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1,0.5))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1,0.5))
         local origangle = angle
         angle = origangle + math.rad(5)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1,0.5))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1,0.5))
         angle = origangle + math.rad(10)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1,0.5))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1,0.5))
         angle = origangle - math.rad(10)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1,0.5))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1,0.5))
         angle = origangle - math.rad(5)
         vx = bulletSpeed * math.cos(angle)
         vy = bulletSpeed * math.sin(angle)
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,1,0.5))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,1,0.5))
       end
       if(self.weapon == 'flame') then
-        Manager:add(Bullet:new(self.centerx,self.centery,vx,vy,0.1,0.3))
+        if(flamesound and not flameplaying) then 
+          flameplaying = true
+          love.audio.play(flamesound) 
+          flameTimer = 0
+        end
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,vx,vy,0.1,0.3))
         self.bulletTimer = 0.03
       end
       if(self.weapon == 'rifle') then
-        Manager:add(Bullet:new(self.centerx,self.centery,3*vx,3*vy,10))
+        if(riflesound) then 
+          love.audio.stop(riflesound) 
+          love.audio.play(riflesound) 
+        end
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,3*vx,3*vy,10))
         self.bulletTimer = 1.5
       end
       if(self.weapon == 'bazooka') then
-        if(bazookasound) then love.audio.play(bazookasound) end
+        if(bazookasound) then 
+          love.audio.stop(bazookasound) 
+          love.audio.play(bazookasound) 
+        end
         local termx, termy = cam:worldCoords(love.mouse.getX(),love.mouse.getY())
-        Manager:add(Bullet:new(self.centerx,self.centery,0.75*vx,0.75*vy,10,10,7,termx,termy))
+        Manager:add(Bullet:new(self.imageCenterX,self.imageCenterY,0.75*vx,0.75*vy,10,10,7,termx,termy))
         self.bulletTimer = 2.5
       end
     end
@@ -352,5 +391,9 @@ end
 function Player:keyreleased(key,code)
   if(key == ' ') then
     self.fireHeld = false
+    if(flamesound) then
+          flameplaying = false
+          love.audio.stop(flamesound) 
+    end
   end
 end
