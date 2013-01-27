@@ -20,6 +20,8 @@ function Zombie:initialize(centerx, centery, radius, lives)
   self.timer = 0
   self.stunned = false
   
+  self.facing = 'd'
+  
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   --HC:addToGroup('Zombies',self.hitcircle)
   self.hitcircle.parent = self
@@ -104,16 +106,80 @@ function Zombie:update(dt, playerX, playerY)
  
   local angleDeg = math.deg(self.angle)
   if(-135 <= angleDeg and angleDeg < -45) then
-    self.quad = up
+    self.facing = 'u'
   end
   if(-45 <= angleDeg and angleDeg  < 45) then
-    self.quad = right
+    self.quad = 'r'
   end
   if(45 <= angleDeg and angleDeg < 135) then
-    self.quad = down
+    self.quad = 'd'
   end
   if((135 < angleDeg and angleDeg <= 180) or (-180 <= angleDeg and angleDeg < -135)) then
-    self.quad = left
+    self.quad = 'l'
+  end
+  
+  local angleDeg = math.deg(self.angle)
+  if(-180 <= angleDeg and angleDeg < -90) then
+    self.facing = "ul"
+  end
+  if(-90 <= angleDeg and angleDeg  < 0) then
+    self.facing = "ur"
+  end
+  if(0 <= angleDeg and angleDeg < 90) then
+    self.facing = "dr"
+  end
+  if(90 <= angleDeg and angleDeg < 180) then
+    self.facing = "dl"
+  end
+      
+  if(self.facing == "ul") then
+    if(self.heroquad == upleft  and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = upleft2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = upleft
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = upleft
+    end
+  end
+  if(self.facing == 'ur') then
+    if(self.heroquad == upright and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = upright2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = upright
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = upright
+    end
+  end
+  if(self.facing == 'dl') then
+    print(self.heroquad == downleft)
+    if(self.heroquad == downleft and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = downleft2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = downleft
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = downleft
+    end
+  end
+  if(self.facing == 'dr') then
+    if(self.heroquad == downright and self.frameTimer==0 and ((math.abs(self.vx) > 0) or (math.abs(self.vy) > 0))) then
+      self.heroquad = downright2
+    else
+      if(self.frameTimer == 0) then
+        self.heroquad = downright
+      end
+    end
+    if(self.vx == 0 and self.vy == 0) then
+      self.heroquad = downright
+    end
   end
   
 end
