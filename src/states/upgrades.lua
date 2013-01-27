@@ -1,17 +1,17 @@
 local title = GS.new()
 
-  function title:init()
+function title:init()
     self.drawGrid = false
 
     self.colors = require 'lib.colors'
     self.gui = require 'lib.quickie'
     self.grid = require 'lib.quickie.grid'
 
-    self.view = love.graphics.newCanvas(812, 764)
+    self.view = love.graphics.newCanvas(800, 600)
 
     self.debugName = "In Game Options"
     -- print("init:\t\t " .. self.debugName)
-  end
+end
 
   function title:enter(previous, lvl)
     nxtlvl = lvl + 1
@@ -99,4 +99,4 @@ local title = GS.new()
     end
   end
 
-  return ingameoptions
+  return InGame

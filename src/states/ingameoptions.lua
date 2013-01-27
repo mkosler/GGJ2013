@@ -19,7 +19,7 @@ local title = GS.new()
     local gridschema = {
 
       columns = {20, 200, 30, 200, 30, 200 },
-      rows = { 30, 20, 30, 10, 10, 30, 80, 30 },
+      rows = { 80, 35, 30, 30, 30, 30, 80, 30 },
       alignment = {
         horizontal = "left",
         vertical = "top"
@@ -46,8 +46,8 @@ local title = GS.new()
       return self.doExit() 
     end 
 
-    self.grid:Label("Current Level: ", 4, 1, 1, 1, "center", "menu")
-    if self.grid:Button("Upgrades: ", 4,2,1,1, 'center', "menu") then
+    self.grid:Label("Current Level: ", 4, 1, 1, 1, "center", "subtitle")
+    if self.grid:Button("Upgrades ", 4,2,1,1, 'center', "menu") then
     	GS.switch(Upgrades)
     end
    
@@ -56,17 +56,17 @@ local title = GS.new()
 
  --   love.audio.setVolume(self.sliders.x.value)
 
-    if self.grid:Button("Main Menu", 2,8,1,1, "menu") then
+    if self.grid:Button("Main Menu", 2,6,1,1, "menu") then
     	GS.switch(Title)
     end
 
-    if self.grid:Button("Resume Play", 6, 8, 1, 1, "menu") then
+    if self.grid:Button("Resume Play", 6, 6, 1, 1, "menu") then
       GS.switch(Play)
     end
   end
 
   function title:draw()
-love.graphics.setColor( 255, 255, 255)
+love.graphics.setColor(255, 255, 255)
 	love.graphics.draw(background)
     self.gui.core.draw()
 
