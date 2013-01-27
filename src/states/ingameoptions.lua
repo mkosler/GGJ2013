@@ -55,7 +55,7 @@ local title = GS.new()
  --   love.audio.setVolume(self.sliders.x)
 
     if self.grid:Button("Main Menu", 2,8,1,1, "menu") then
-      self.doExit = function () return "title" end
+    	GS.switch(Title)
     end
 
     if self.grid:Button("Resume Play", 6, 8, 1, 1, "menu") then
@@ -84,7 +84,7 @@ local title = GS.new()
   function title:keypressed(key, code)
     self.gui.core.keyboard.pressed(key, code)
     if key == "escape" then
-      self.doExit = function () return self.parent end
+      GS.switch(Title)
     end
     if key == "s" then
       print(self.sliders.x.value)

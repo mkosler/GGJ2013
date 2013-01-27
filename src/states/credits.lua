@@ -66,7 +66,7 @@ local title = GS.new()
   function title:keypressed(key, code)
     self.gui.core.keyboard.pressed(key, code)
     if key == "escape" then
-      self.doExit = function () return self.parent end
+      GS.switch(Title)
     end
 
     if key == "g" then

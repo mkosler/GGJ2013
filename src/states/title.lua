@@ -70,6 +70,7 @@ background=love.graphics.newImage("assets/art/mainlogo.png")
 
     self.gui.core.draw()
 end
+
     if self.drawGrid then self.grid:TestDrawGrid() end
   end
 
