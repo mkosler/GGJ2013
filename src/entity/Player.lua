@@ -13,6 +13,13 @@ local upright2 = love.graphics.newQuad(20, 0, 20, 40, 80, 80)
 local downleft2 = love.graphics.newQuad(40, 0, 20, 40, 80, 80)
 local downright2 = love.graphics.newQuad(60, 0, 20, 40, 80, 80)
 
+local pistolsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local smgsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local shotgunsound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local flamesound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local riflesound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+local bazookasound = love.audio.newSource("assets/sound/Sound_Heartbeat_Single_Speed_1.mp3")
+
 
 function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   Entity.initialize(self, centerx, centery, radius)
@@ -28,7 +35,7 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
   self.hitcircle = HC:addCircle(self.centerx,self.centery,self.radius)
   self.hitcircle.parent = self
   
-  self.weapon = "pistol"
+  self.weapon = "rifle"
   
   self.bulletTimer = 0
   self.frameTimer = 0
@@ -62,6 +69,9 @@ function Player:initialize(centerx, centery, radius, safespotx, safespoty)
 end
 
 function Player:collision(o, dx, dy, dt)
+  if(instanceOf(Door,o) and o.name == "Destination") then
+    self.finished = true
+  end
   if (not(instanceOf(Bullet,o)) and (self.vx > 0 or self.vy > 0)) then
   self.centerx = self.centerx + dx
   self.centery = self.centery + dy
