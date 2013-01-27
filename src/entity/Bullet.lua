@@ -52,7 +52,7 @@ end
 
 
 function Bullet:update(dt)
-  if (200 <= self.centerx and self.centerx <= 8800 and 200 <= self.centerx and self.centerx <= 2200) then
+  if (200 <= self.centerx and self.centerx <= 8800 and 200 <= self.centery and self.centery <= 2200) then
     self.removable=true
   end
   
