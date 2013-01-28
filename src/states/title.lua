@@ -54,7 +54,7 @@
     end
 
    if self.grid:Button("Instructions", 3, 8, 1, 1, "menu") then
-      GS.switch(Upgrades)
+      GS.switch(Instructions)
     end
 
   end
