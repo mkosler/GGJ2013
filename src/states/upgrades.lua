@@ -10,7 +10,6 @@ function title:init()
     self.view = love.graphics.newCanvas(800, 600)
 
     self.debugName = "In Game Options"
-    -- print("init:\t\t " .. self.debugName)
 end
 
   function title:enter(previous, lvl)
@@ -87,12 +86,6 @@ end
     if key == "escape" then
       GS.switch(InGame)
     end
-    if key == "s" then
-      print(self.sliders.x.value)
-      print(self.sliders.y.value)
-      print(self.sliders.z.value)
-    end
-
 
     if key == "g" then
       self.drawGrid = not self.drawGrid

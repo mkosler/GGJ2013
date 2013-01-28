@@ -64,7 +64,6 @@ function Manager:update(dt)
         love.graphics.getWidth() / 2,
         love.graphics.getHeight() / 2
       local x, y = self.player.centerx + halfwidth * sign(), self.player.centery + halfheight * sign()
-      --print(string.format('Spawning zombie @ (%d,%d)', x, y))
       self:add(Zombie:new(x, y, 10, 2))
       self.zombieTimer = self.zombieTimerMax
     end
@@ -135,8 +134,6 @@ function Manager:clear()
   for i,v in pairs(self.blocks) do
     self:cleanBlock(i)
   end
-
-  print(#self.objects, #self.blocks)
 
   self.player = {}
   self.objects = {}

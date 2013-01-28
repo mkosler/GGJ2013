@@ -10,7 +10,6 @@ local title = GS.new()
 	background=love.graphics.newImage("assets/art/mainlogo.png")
 
     self.debugName = "Options"
-    -- print("init:\t\t " .. self.debugName)
   end
 
   function title:enter(previous)
@@ -73,11 +72,6 @@ local title = GS.new()
     if key == "escape" then
     	GS.switch(Title)
     end
-    if key == "s" then
-      print(self.sliders.x.value)
-
-    end
-
 
     if key == "g" then
       self.drawGrid = not self.drawGrid

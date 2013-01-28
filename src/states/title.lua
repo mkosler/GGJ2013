@@ -12,11 +12,9 @@ local title = GS.new()
 	timer = 2
 
     self.debugName = "Title"
-    -- print("init:\t\t " .. self.debugName)
   end
 
   function title:enter(previous)
-print(background)
     local gridschema = {
       columns = {150, 10, 300, 10, 150, 10, 150 },
       rows = {20, 60, 10, 30, 10, 30, 10, 30, 10, 30 },
@@ -27,12 +25,10 @@ print(background)
       margin = { left = 85, top = 275, right = 0, bottom = 0 }
     }
     self.grid:init(self.gui, gridschema)
-    -- print("enter:\t\t " .. self.debugName)
   end
 
   function title:leave(previous)
     self.doExit = nil
-    -- print("leave:\t\t " .. self.debugName .. "\n")
   end
 
   function title:update(dt)
@@ -54,12 +50,10 @@ print(background)
     end
 
     if self.grid:Button("About", 3, 6, 1, 1, "menu") then
-print(Credits)
       GS.switch(Credits)
     end
 
    if self.grid:Button("Instructions", 3, 8, 1, 1, "menu") then
-print(Instructions)
       GS.switch(Instructions)
     end
 
@@ -96,8 +90,6 @@ end
     if key == "escape" then
       love.event.push("quit")
     end
-
-    -- print("keypressed:\t " .. self.debugName, key, code)
   end
 
   return title

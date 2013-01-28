@@ -9,8 +9,6 @@ local title = GS.new()
 	background=love.graphics.newImage("assets/art/mainlogo.png")
 
     self.debugName = "Credits"
-    print("Hi")
-    -- print("init:\t\t " .. self.debugName)
   end
 
   function title:enter(previous)
@@ -66,8 +64,6 @@ local title = GS.new()
     if key == "g" then
       self.drawGrid = not self.drawGrid
     end
-
-    -- print("keypressed:\t " .. self.debugName, key, code)
   end
 
   return title

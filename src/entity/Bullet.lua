@@ -112,7 +112,6 @@ function Bullet:draw()
     love.graphics.circle("fill", self.centerx, self.centery, self.radius)
   end
   -- if(self.shouldExplode) then
-    -- print("I AM EXPLODING")
     -- self.shouldExplode = false
     -- if(self.terminatex and self.terminatey) then
       -- local drawx, drawy = cam:worldCoords(self.terminatex,self.terminatey)

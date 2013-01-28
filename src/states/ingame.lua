@@ -97,12 +97,6 @@ return function (state)
     if key == "escape" then
       GS.switch(Title)
     end
-    if key == "s" then
-      print(self.sliders.x.value)
-      print(self.sliders.y.value)
-      print(self.sliders.z.value)
-    end
-
 
     if key == "g" then
       self.drawGrid = not self.drawGrid

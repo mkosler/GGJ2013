@@ -10,7 +10,6 @@ local title = GS.new()
     self.view = love.graphics.newCanvas(800, 600)
 
     self.debugName = "In Game Options"
-    -- print("init:\t\t " .. self.debugName)
   end
 
 local lvl
@@ -80,10 +79,6 @@ love.graphics.setColor(255, 255, 255)
     if key == "escape" then
       GS.switch(Play)
     end
-    if key == "s" then
-      print(self.sliders.x.value)
-    end
-
 
     if key == "g" then
       self.drawGrid = not self.drawGrid
