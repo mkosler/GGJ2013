@@ -1,4 +1,4 @@
-local title = GS.new()
+ local title = GS.new()
 
   function title:init()
     self.drawGrid = false
@@ -54,7 +54,7 @@ local title = GS.new()
     end
 
    if self.grid:Button("Instructions", 3, 8, 1, 1, "menu") then
-      GS.switch(Instructions)
+      GS.switch(Upgrades)
     end
 
   end
